@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taha & Zephyr — Week 2: Python Intermediate</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0f12;--sf:#141720;--sf2:#1c2030;--sf3:#232840;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.13);
+  --ac:#a78bfa;--g:#6ee7b7;--y:#fbbf24;--bl:#60a5fa;--red:#f87171;
+  --tx:#f0f4f8;--mu:#7a8599;--mu2:#4a5568;
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;line-height:1.7}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(167,139,250,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,.022) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+
+/* HERO */
+.hero{position:relative;z-index:1;padding:52px 52px 32px;max-width:1160px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:11px;color:var(--ac);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--ac)}
+.hero h1{font-size:clamp(28px,4.5vw,50px);font-weight:300;line-height:1.12;letter-spacing:-.025em;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--ac);font-weight:600}
+.names{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.ntag{background:var(--sf2);border:1px solid var(--bd2);border-radius:20px;padding:5px 14px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px}
+.av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:var(--mono)}
+.av-t{background:rgba(251,191,36,.15);color:var(--y)}
+.av-z{background:rgba(167,139,250,.15);color:var(--ac)}
+.sub{color:var(--mu);font-size:15px;max-width:580px;margin-bottom:22px;line-height:1.65}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:5px 13px;font-family:var(--mono);font-size:11px;color:var(--mu);display:flex;align-items:center;gap:6px}
+.dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+
+/* PROGRESS */
+.pgw{max-width:1160px;margin:0 auto;padding:0 52px 24px;position:relative;z-index:1}
+.pgr{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--mu);margin-bottom:6px}
+.pgt{background:var(--sf2);height:3px;border-radius:2px;overflow:hidden}
+.pgf{background:linear-gradient(90deg,var(--ac),var(--g));height:100%;border-radius:2px;transition:width .5s;width:0%}
+
+/* STICKY TABS */
+.tnav{position:sticky;top:0;z-index:100;background:rgba(13,15,18,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);padding:0 52px}
+.trow{display:flex;max-width:1160px;margin:0 auto}
+.tb{padding:14px 18px;font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--mu);background:transparent;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.tb:hover{color:var(--tx)}
+.tb.on{color:var(--ac);border-bottom-color:var(--ac)}
+
+/* MAIN */
+.main{max-width:1160px;margin:0 auto;padding:36px 52px 80px;position:relative;z-index:1}
+.sec{display:none}.sec.on{display:block}
+
+/* DAY BAR */
+.dbar{display:flex;gap:7px;margin-bottom:28px;flex-wrap:wrap}
+.dbt{padding:7px 15px;font-family:var(--mono);font-size:10px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--mu);cursor:pointer;transition:all .2s;position:relative;text-align:center;line-height:1.5}
+.dbt:hover{border-color:var(--ac);color:var(--ac)}
+.dbt.on{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.45);color:var(--ac)}
+.dbt.dn::after{content:'✓';position:absolute;top:-6px;right:-6px;background:var(--g);color:#0d0f12;font-size:8px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.dv{display:none}.dv.on{display:block}
+
+/* DAY HEADER */
+.dh{display:flex;align-items:flex-start;gap:16px;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid var(--bd)}
+.dnum{font-family:var(--mono);font-size:11px;color:var(--ac);background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:5px;padding:5px 12px;white-space:nowrap;flex-shrink:0}
+.dtit{font-size:20px;font-weight:400;flex:1;line-height:1.3}
+.dtit strong{font-weight:600;color:var(--ac)}
+.donebt{font-family:var(--mono);font-size:11px;padding:6px 14px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--mu);cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.donebt.dn{background:rgba(110,231,183,.1);border-color:rgba(110,231,183,.35);color:var(--g)}
+
+/* TOPIC CARDS */
+.tc{margin-bottom:22px;background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden}
+.thead{display:flex;align-items:center;gap:14px;padding:18px 24px 12px}
+.tico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ic-p{background:rgba(167,139,250,.12)}.ic-b{background:rgba(96,165,250,.1)}
+.ic-g{background:rgba(110,231,183,.1)}.ic-y{background:rgba(251,191,36,.1)}.ic-r{background:rgba(248,113,113,.1)}
+.tlb{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu)}
+.ttl{font-size:16px;font-weight:500;margin-top:2px}
+.tbody{padding:0 24px 22px}
+
+/* TEXT */
+.exp{font-size:14px;color:#c4cdd9;line-height:1.85;margin-bottom:12px}
+.exp strong{color:var(--tx);font-weight:500}
+.exp code{font-family:var(--mono);font-size:12px;background:var(--sf2);border:1px solid var(--bd2);border-radius:4px;padding:1px 7px;color:var(--ac)}
+
+/* CALLOUTS */
+.box{border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:13.5px;line-height:1.7}
+.box strong{font-weight:600}
+.bbl{background:rgba(96,165,250,.05);border-left:3px solid var(--bl);color:#7fadd4}.bbl strong{color:var(--bl)}
+.bby{background:rgba(251,191,36,.05);border-left:3px solid var(--y);color:#a08840}.bby strong{color:var(--y)}
+.bbg{background:rgba(110,231,183,.05);border-left:3px solid var(--g);color:#4d9878}.bbg strong{color:var(--g)}
+.bbp{background:rgba(167,139,250,.05);border-left:3px solid var(--ac);color:#7a68c0}.bbp strong{color:var(--ac)}
+.bbr{background:rgba(248,113,113,.05);border-left:3px solid var(--red);color:#9a5555}.bbr strong{color:var(--red)}
+
+/* CODE */
+.syn{background:#080a0e;border:1px solid var(--bd2);border-radius:9px;padding:16px 20px;margin:12px 0;font-family:var(--mono);font-size:12.5px;line-height:1.8;overflow-x:auto;white-space:pre}
+.k{color:var(--ac)}.s{color:#e3a46a}.fn{color:var(--g)}.n{color:#f9a875}.cm{color:#4a6741}.o{color:var(--mu);font-style:italic}
+.cb{position:relative;margin:12px 0}
+.cb pre{background:#080a0e;border:1px solid var(--bd2);border-radius:9px;padding:20px;font-family:var(--mono);font-size:12.5px;line-height:1.78;overflow-x:auto;white-space:pre;margin:0}
+.cpb{position:absolute;top:10px;right:10px;background:var(--sf2);border:1px solid var(--bd2);border-radius:5px;padding:4px 10px;font-family:var(--mono);font-size:10px;color:var(--mu);cursor:pointer;transition:all .2s;z-index:2}
+.cpb:hover{color:var(--tx)}
+.out{background:#060708;border:1px solid var(--bd);border-top:2px solid rgba(110,231,183,.12);border-radius:0 0 9px 9px;padding:12px 18px;font-family:var(--mono);font-size:12px;color:#5e8f6e;margin-top:-1px}
+.out::before{content:'▶ OUTPUT';font-size:9px;letter-spacing:.12em;color:var(--mu2);display:block;margin-bottom:5px}
+
+/* VISUAL DIAGRAMS */
+.diag{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:16px 20px;margin:12px 0}
+.diag h4{font-family:var(--mono);font-size:10px;color:var(--ac);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.fb{background:var(--sf);border:1px solid var(--bd2);border-radius:7px;padding:7px 14px;font-size:12.5px;font-family:var(--mono);color:var(--tx)}
+.fa{color:var(--mu);font-size:14px}
+.fb.hp{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.35);color:var(--ac)}
+.fb.hg{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.3);color:var(--g)}
+.fb.hy{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3);color:var(--y)}
+.fb.hb{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.3);color:var(--bl)}
+
+/* INTERACTIVE: code challenge */
+.icc{background:var(--sf2);border:1px solid rgba(167,139,250,.2);border-radius:10px;padding:18px 22px;margin:14px 0}
+.icc h4{font-family:var(--mono);font-size:10px;color:var(--ac);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.icc .hint{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
+.icc-q{font-size:14px;color:var(--tx);margin-bottom:12px;line-height:1.6}
+.icc-code{font-family:var(--mono);font-size:12.5px;background:#080a0e;border:1px solid var(--bd2);border-radius:7px;padding:12px 16px;margin-bottom:12px;color:#8bafd4;white-space:pre;overflow-x:auto}
+.icc-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.icc-opt{background:var(--sf);border:1px solid var(--bd);border-radius:6px;padding:9px 13px;font-family:var(--mono);font-size:12px;cursor:pointer;text-align:left;color:var(--mu);transition:all .15s}
+.icc-opt:hover:not(:disabled){background:var(--sf3);border-color:var(--bd2);color:var(--tx)}
+.icc-opt.ok{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.35);color:var(--g)}
+.icc-opt.no{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red)}
+.icc-opt:disabled{cursor:default}
+.icc-fb{font-size:13px;margin-top:10px;padding:10px 14px;border-radius:6px;display:none;line-height:1.55}
+.icc-fb.show{display:block}
+.icc-fb.ok{background:rgba(110,231,183,.06);color:var(--g);border-left:2px solid var(--g)}
+.icc-fb.no{background:rgba(248,113,113,.06);color:var(--red);border-left:2px solid var(--red)}
+
+/* COMPARISON TABLE */
+.ctab{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.ctab th{background:var(--sf2);padding:9px 14px;text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);border-bottom:1px solid var(--bd2)}
+.ctab td{padding:9px 14px;border-bottom:1px solid var(--bd);color:var(--mu);vertical-align:top;line-height:1.6}
+.ctab td:first-child{font-family:var(--mono);font-size:12px;color:var(--ac)}
+.ctab tr:last-child td{border-bottom:none}
+
+/* QUIZ */
+.qlb{font-family:var(--mono);font-size:11px;color:var(--mu);letter-spacing:.08em;text-transform:uppercase;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--bd)}
+.qcard{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:20px 22px;margin-bottom:12px}
+.qq{font-size:14px;font-weight:500;margin-bottom:5px;line-height:1.55}
+.qcode{font-family:var(--mono);font-size:12px;background:#080a0e;border:1px solid var(--bd2);border-radius:6px;padding:10px 14px;margin:10px 0;color:#8bafd4;white-space:pre;overflow-x:auto}
+.qopts{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.qo{background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:10px 15px;font-size:13px;cursor:pointer;text-align:left;color:var(--mu);transition:all .15s;font-family:var(--sans);line-height:1.4}
+.qo:hover:not(:disabled){background:var(--sf3);border-color:var(--bd2);color:var(--tx)}
+.qo.ok{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.35);color:var(--g)}
+.qo.no{background:rgba(248,113,113,.08);border-color:rgba(248,113,113,.3);color:var(--red)}
+.qo:disabled{cursor:default}
+.qfb{font-size:13px;margin-top:10px;padding:10px 14px;border-radius:6px;display:none;line-height:1.55}
+.qfb.show{display:block}
+.qfb.ok{background:rgba(110,231,183,.06);color:var(--g);border-left:2px solid var(--g)}
+.qfb.no{background:rgba(248,113,113,.06);color:var(--red);border-left:2px solid var(--red)}
+.scoreln{font-family:var(--mono);font-size:13px;color:var(--mu);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.scoreln .sc{color:var(--ac);font-size:22px;font-weight:700}
+
+/* EXERCISES */
+.ex{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:24px;margin-bottom:16px}
+.exn{font-family:var(--mono);font-size:10px;color:var(--y);letter-spacing:.09em;margin-bottom:4px}
+.ext{font-size:16px;font-weight:500;margin-bottom:8px}
+.exd{font-size:14px;color:var(--mu);line-height:1.75;margin-bottom:10px}
+.exs{margin:0 0 12px 20px;font-size:13.5px;color:var(--mu);line-height:1.9}
+.exs li{margin-bottom:3px}
+.exh{background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:6px;padding:9px 13px;font-size:13px;color:#a08840;margin-bottom:8px}
+.exb{background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.15);border-radius:6px;padding:9px 13px;font-size:13px;color:#7a68c0}
+.extg{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 9px;border-radius:4px;margin:0 6px 8px 0}
+.etg-h{background:rgba(248,113,113,.1);color:var(--red)}
+.etg-m{background:rgba(251,191,36,.1);color:var(--y)}
+.etg-e{background:rgba(110,231,183,.1);color:var(--g)}
+.exsc{background:#080a0e;border:1px solid var(--bd2);border-radius:7px;padding:12px 16px;font-family:var(--mono);font-size:12px;color:#8bafd4;margin:8px 0;white-space:pre;overflow-x:auto}
+
+/* CHALLENGE */
+.chal{background:linear-gradient(135deg,rgba(167,139,250,.07),rgba(110,231,183,.03));border:1px solid rgba(167,139,250,.22);border-radius:10px;padding:20px 24px;margin-top:16px}
+.chal h4{font-family:var(--mono);font-size:10px;color:var(--ac);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.chal ol{margin:0 0 0 18px;font-size:14px;color:var(--mu);line-height:1.9}
+.chal ol li{margin-bottom:4px}
+
+/* PROJECT */
+.proj{background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(167,139,250,.03));border:1px solid rgba(251,191,36,.2);border-radius:10px;padding:22px 26px;margin-top:18px}
+.proj h4{font-family:var(--mono);font-size:10px;color:var(--y);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.proj ol{margin:0 0 0 18px;font-size:14px;color:var(--mu);line-height:1.9}
+.proj p{font-size:14px;color:var(--mu);line-height:1.75;margin-bottom:8px}
+
+/* ROADMAP */
+.rmw{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;margin-bottom:28px}
+.rmc{flex-shrink:0;width:210px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:18px}
+.rmc.cur{border:2px solid var(--ac)}
+.rmtg{font-family:var(--mono);font-size:10px;color:var(--mu);margin-bottom:5px}
+.rmtg.ok{color:var(--g)}.rmtg.now{color:var(--ac)}
+.rmn{font-size:14px;font-weight:500;margin-bottom:6px}
+.rmt{font-size:12px;color:var(--mu);line-height:1.6}
+.nowbdg{display:inline-block;background:var(--ac);color:#0d0f12;font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;font-weight:700;margin-bottom:8px}
+
+footer{text-align:center;padding:26px;font-family:var(--mono);font-size:11px;color:var(--mu2);border-top:1px solid var(--bd);position:relative;z-index:1}
+@media(max-width:700px){.hero,.pgw,.main,.tnav{padding-left:18px;padding-right:18px}.tb{padding:12px 10px;font-size:10px}.icc-opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">AI / ML Learning Path · Week 2 of 4</div>
+  <h1>Python <em>Intermediate</em></h1>
+  <div class="names">
+    <span class="ntag"><span class="av av-t">T</span>Taha</span>
+    <span style="color:var(--mu);font-size:13px">&amp;</span>
+    <span class="ntag"><span class="av av-z">Z</span>Zephyr</span>
+  </div>
+  <p class="sub">List comprehensions, OOP, NumPy, Pandas, APIs, Regex, Modules. The tools every working data scientist uses daily — with interactive quizzes, code you can run, and exercises mirroring real projects.</p>
+  <div class="chips">
+    <span class="chip"><span class="dot" style="background:var(--ac)"></span>90 min/day</span>
+    <span class="chip"><span class="dot" style="background:var(--g)"></span>7 days</span>
+    <span class="chip"><span class="dot" style="background:var(--y)"></span>21 quizzes</span>
+    <span class="chip"><span class="dot" style="background:var(--bl)"></span>6 exercises</span>
+    <span class="chip"><span class="dot" style="background:var(--red)"></span>Prereq: Week 1</span>
+  </div>
+</div>
+
+<div class="pgw">
+  <div class="pgr"><span id="pgtxt">0 / 7 days complete</span><span id="pgpct">0%</span></div>
+  <div class="pgt"><div class="pgf" id="pgf"></div></div>
+</div>
+
+<div class="tnav">
+  <div class="trow">
+    <button class="tb on" onclick="showTab('learn',this)">Learn</button>
+    <button class="tb" onclick="showTab('quizzes',this)">Quizzes</button>
+    <button class="tb" onclick="showTab('exercises',this)">Exercises</button>
+    <button class="tb" onclick="showTab('roadmap',this)">Roadmap</button>
+  </div>
+</div>
+
+<div class="main">
+<div class="sec on" id="learn">
+<div class="dbar">
+  <button class="dbt on" onclick="showDay(1,this)">Day 1<br><span style="font-size:9px;color:var(--mu)">Comprehensions</span></button>
+  <button class="dbt" onclick="showDay(2,this)">Day 2<br><span style="font-size:9px;color:var(--mu)">OOP</span></button>
+  <button class="dbt" onclick="showDay(3,this)">Day 3<br><span style="font-size:9px;color:var(--mu)">Modules</span></button>
+  <button class="dbt" onclick="showDay(4,this)">Day 4<br><span style="font-size:9px;color:var(--mu)">NumPy</span></button>
+  <button class="dbt" onclick="showDay(5,this)">Day 5<br><span style="font-size:9px;color:var(--mu)">Pandas</span></button>
+  <button class="dbt" onclick="showDay(6,this)">Day 6<br><span style="font-size:9px;color:var(--mu)">APIs</span></button>
+  <button class="dbt" onclick="showDay(7,this)">Day 7<br><span style="font-size:9px;color:var(--mu)">Regex+Project</span></button>
+</div>
+
+<!-- ═══════════ DAY 1 ═══════════ -->
+<div class="dv on" id="day1">
+  <div class="dh">
+    <span class="dnum">Day 01</span>
+    <div><div class="dtit">List Comprehensions · Dict Comprehensions · Sets · <strong>Generators</strong></div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">Replace clunky loops with elegant one-liners. The syntax every data scientist writes every single day.</div></div>
+    <button class="donebt" id="db1" onclick="markDone(1)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">⚡</div><div><div class="tlb">Core syntax</div><div class="ttl">List comprehensions — the transformation pattern</div></div></div>
+    <div class="tbody">
+      <p class="exp">A <strong>list comprehension</strong> builds a new list by applying an expression to every item in a single line. It replaces the write-a-loop-then-append pattern you learned in Week 1. The mental model: <code>[what_to_produce  for each_item  in source  if condition]</code>.</p>
+      <div class="diag">
+        <h4>Anatomy of a comprehension</h4>
+        <div class="frow">
+          <div class="fb hp">[x**2</div><div class="fa">→</div>
+          <div class="fb hg">for x</div><div class="fa">→</div>
+          <div class="fb">in range(10)</div><div class="fa">→</div>
+          <div class="fb hy">if x % 2 == 0]</div>
+        </div>
+        <div class="frow" style="margin-top:6px;font-size:12px;color:var(--mu)">
+          <div style="width:72px;text-align:center;color:var(--ac)">EXPRESSION<br>output</div>
+          <div style="width:20px"></div>
+          <div style="width:56px;text-align:center;color:var(--g)">VARIABLE<br>loop var</div>
+          <div style="width:20px"></div>
+          <div style="width:90px;text-align:center">ITERABLE<br>source data</div>
+          <div style="width:20px"></div>
+          <div style="width:90px;text-align:center;color:var(--y)">FILTER (opt.)<br>keep if true</div>
+        </div>
+      </div>
+      <div class="syn"><span class="cm"># ── OLD WAY (4 lines, Week 1 style) ──────────────────────</span>
+squares = []
+<span class="k">for</span> x <span class="k">in</span> range(10):
+    squares.append(x**2)
+
+<span class="cm"># ── NEW WAY: comprehension (1 line, identical result) ─────</span>
+squares = [x**2 <span class="k">for</span> x <span class="k">in</span> range(10)]
+<span class="o"># [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+
+<span class="cm"># ── With filter condition ──────────────────────────────────</span>
+even_squares = [x**2 <span class="k">for</span> x <span class="k">in</span> range(20) <span class="k">if</span> x % 2 == 0]
+<span class="o"># [0, 4, 16, 36, 64, 100, 144, 196, 256, 324]</span>
+
+<span class="cm"># ── String processing (used constantly in NLP / data cleaning)</span>
+raw   = [<span class="s">"  Python  "</span>, <span class="s">"SQL  "</span>, <span class="s">"  LangChain"</span>, <span class="s">"  numpy  "</span>]
+clean = [s.strip().lower() <span class="k">for</span> s <span class="k">in</span> raw]
+<span class="o"># ['python', 'sql', 'langchain', 'numpy']</span>
+
+<span class="cm"># ── Ternary inside comprehension ──────────────────────────</span>
+scores = [85, 42, 91, 38, 77, 60]
+grades = [<span class="s">"pass"</span> <span class="k">if</span> s >= 60 <span class="k">else</span> <span class="s">"fail"</span> <span class="k">for</span> s <span class="k">in</span> scores]
+<span class="o"># ['pass', 'fail', 'pass', 'fail', 'pass', 'pass']</span>
+
+<span class="cm"># ── Nested (flatten a list-of-lists) ─────────────────────</span>
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+flat   = [x <span class="k">for</span> row <span class="k">in</span> matrix <span class="k">for</span> x <span class="k">in</span> row]
+<span class="o"># [1, 2, 3, 4, 5, 6, 7, 8, 9]</span></div>
+      <div class="box bby"><strong>⚠ Don't overdo it:</strong> A comprehension that takes 20 seconds to parse is worse than a 5-line loop. One rule: if it doesn't fit cleanly on one line, use a regular loop. Readability is a professional virtue.</div>
+
+      <!-- INTERACTIVE QUIZ 1 -->
+      <div class="icc" id="icq1">
+        <h4>🧠 Quick check <span class="hint">· 4 options · click to answer</span></h4>
+        <div class="icc-q">What does <code>[x**2 for x in range(5) if x % 2 == 0]</code> return?</div>
+        <div class="icc-opts">
+          <button class="icc-opt" onclick="icAns('icq1',this,0,1,'range(5)=0,1,2,3,4. Keep evens: 0,2,4. Square them: 0,4,16.')">A) [1, 4, 9, 16, 25]</button>
+          <button class="icc-opt" onclick="icAns('icq1',this,1,1,'range(5)=0,1,2,3,4. Keep evens: 0,2,4. Square them: 0,4,16.')">B) [0, 4, 16]</button>
+          <button class="icc-opt" onclick="icAns('icq1',this,2,1,'range(5)=0,1,2,3,4. Keep evens: 0,2,4. Square them: 0,4,16.')">C) [0, 2, 4]</button>
+          <button class="icc-opt" onclick="icAns('icq1',this,3,1,'range(5)=0,1,2,3,4. Keep evens: 0,2,4. Square them: 0,4,16.')">D) [4, 16]</button>
+        </div>
+        <div class="icc-fb" id="icfb1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-b">📘</div><div><div class="tlb">Dict & Set comprehensions</div><div class="ttl">Same idea for dicts and sets</div></div></div>
+    <div class="tbody">
+      <p class="exp">The same pattern applies to <strong>dicts</strong> (<code>{k: v for ...}</code>) and <strong>sets</strong> (<code>{x for ...}</code>). Sets are fast for deduplication and membership tests. A set lookup is O(1) — the same speed regardless of size.</p>
+      <div class="syn"><span class="cm"># Dict comprehension</span>
+words    = [<span class="s">"apple"</span>, <span class="s">"banana"</span>, <span class="s">"cherry"</span>, <span class="s">"date"</span>]
+word_len = {w: <span class="fn">len</span>(w) <span class="k">for</span> w <span class="k">in</span> words}
+<span class="o"># {'apple': 5, 'banana': 6, 'cherry': 6, 'date': 4}</span>
+
+<span class="cm"># Filter a dict — keep only scores >= 85</span>
+scores = {<span class="s">"Taha"</span>: 95, <span class="s">"Zephyr"</span>: 88, <span class="s">"Sara"</span>: 62, <span class="s">"Omar"</span>: 91}
+top    = {k: v <span class="k">for</span> k, v <span class="k">in</span> scores.items() <span class="k">if</span> v >= 85}
+<span class="o"># {'Taha': 95, 'Zephyr': 88, 'Omar': 91}</span>
+
+<span class="cm"># Invert a dict</span>
+inv = {v: k <span class="k">for</span> k, v <span class="k">in</span> scores.items()}
+<span class="o"># {95: 'Taha', 88: 'Zephyr', 62: 'Sara', 91: 'Omar'}</span>
+
+<span class="cm"># Set comprehension — auto-deduplicates</span>
+text   = <span class="s">"the cat sat on the mat on the floor"</span>
+unique = {w <span class="k">for</span> w <span class="k">in</span> text.split()}
+<span class="o"># {'cat', 'floor', 'mat', 'on', 'sat', 'the'}</span>
+
+<span class="cm"># Set operations — very fast, used in data pipelines</span>
+backend = {<span class="s">"Python"</span>, <span class="s">"SQL"</span>, <span class="s">"Docker"</span>, <span class="s">"Redis"</span>}
+ml_eng  = {<span class="s">"Python"</span>, <span class="s">"PyTorch"</span>, <span class="s">"SQL"</span>, <span class="s">"CUDA"</span>}
+<span class="fn">print</span>(backend &amp; ml_eng)  <span class="o"># {'Python', 'SQL'}   — intersection</span>
+<span class="fn">print</span>(backend | ml_eng)  <span class="o"># union of all skills</span>
+<span class="fn">print</span>(backend - ml_eng)  <span class="o"># {'Docker', 'Redis'}  — only in backend</span></div>
+      <div class="box bbg"><strong>Real-world use:</strong> Sets are how you find "users who signed up but never purchased" (<code>signups - purchases</code>). For NLP: <code>word in stopword_set</code> is 10,000× faster than <code>word in stopword_list</code> when the list is large.</div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">♾️</div><div><div class="tlb">Memory efficiency</div><div class="ttl">Generators — produce values one at a time, near-zero RAM</div></div></div>
+    <div class="tbody">
+      <p class="exp">A <strong>generator</strong> uses <code>()</code> instead of <code>[]</code>. The crucial difference: it doesn't build the entire list in memory — it computes values on demand. Processing 10 million rows: list = 800MB RAM, generator = 200 bytes.</p>
+      <div class="diag">
+        <h4>List vs generator memory model</h4>
+        <div class="frow">
+          <div style="flex:1">
+            <div style="font-size:11px;color:var(--red);margin-bottom:6px">List — all values in RAM at once</div>
+            <div style="display:flex;gap:0">
+              <div class="fb" style="font-size:11px;padding:5px 9px;border-radius:4px 0 0 4px">0</div>
+              <div class="fb" style="font-size:11px;padding:5px 9px;border-radius:0;border-left:none">1</div>
+              <div class="fb" style="font-size:11px;padding:5px 9px;border-radius:0;border-left:none">4</div>
+              <div class="fb" style="font-size:11px;padding:5px 9px;border-radius:0;border-left:none">9</div>
+              <div class="fb" style="font-size:11px;padding:5px 9px;border-radius:0 4px 4px 0;border-left:none">…×1M</div>
+            </div>
+            <div style="font-size:11px;color:var(--mu);margin-top:4px">~8MB for 1M integers</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:11px;color:var(--g);margin-bottom:6px">Generator — one value at a time</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <div class="fb hg" style="font-size:11px;padding:5px 9px">state: x=3</div>
+              <div class="fa">→ next() →</div>
+              <div class="fb hg" style="font-size:11px;padding:5px 9px">yields 9</div>
+            </div>
+            <div style="font-size:11px;color:var(--mu);margin-top:4px">~120 bytes total</div>
+          </div>
+        </div>
+      </div>
+      <div class="syn"><span class="cm"># List: ALL 1M values computed immediately</span>
+big_list = [x**2 <span class="k">for</span> x <span class="k">in</span> range(1_000_000)]   <span class="o"># ~8MB RAM used</span>
+
+<span class="cm"># Generator: identical to write, near-zero RAM</span>
+big_gen  = (x**2 <span class="k">for</span> x <span class="k">in</span> range(1_000_000))   <span class="o"># ~120 bytes!</span>
+
+<span class="cm"># Generator FUNCTION — use yield</span>
+<span class="k">def</span> <span class="fn">fibonacci</span>():
+    a, b = 0, 1
+    <span class="k">while</span> True:          <span class="o"># infinite sequence — no memory problem!</span>
+        <span class="k">yield</span> a          <span class="o"># pause here, return a to caller</span>
+        a, b = b, a + b  <span class="o"># resume here on next call</span>
+
+fib    = fibonacci()
+first  = [<span class="fn">next</span>(fib) <span class="k">for</span> _ <span class="k">in</span> range(12)]
+<span class="o"># [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]</span>
+
+<span class="cm"># Practical: stream data in batches (the PyTorch DataLoader pattern)</span>
+<span class="k">def</span> <span class="fn">batch_iter</span>(data, size=32):
+    <span class="s">"""Yield data in fixed-size batches."""</span>
+    <span class="k">for</span> i <span class="k">in</span> range(0, <span class="fn">len</span>(data), size):
+        <span class="k">yield</span> data[i : i + size]
+
+<span class="k">for</span> batch <span class="k">in</span> batch_iter(list(range(100)), 10):
+    pass  <span class="o"># process each batch — never loads all 100 at once</span></div>
+      <div class="box bbp"><strong>Why this matters for your ML work:</strong> PyTorch DataLoaders are generators. LangChain streaming uses generators to yield tokens. When you train on 1M rows, generators feed data to the model batch-by-batch without loading it all into RAM.</div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">💻</div><div><div class="tlb">Full working code</div><div class="ttl">Day 1 — type and run this</div></div></div>
+    <div class="tbody">
+      <div class="cb"><button class="cpb" onclick="cp(this)">copy</button>
+<pre># ── Day 1: Comprehensions, Sets, Generators ───────────────
+
+# 1. List comprehensions
+numbers   = list(range(1, 21))
+squares   = [n**2 for n in numbers]
+evens     = [n for n in numbers if n % 2 == 0]
+even_sq   = [n**2 for n in numbers if n % 2 == 0]
+print(f"Squares:   {squares[:5]}...")
+print(f"Evens:     {evens}")
+print(f"Even sq:   {even_sq}")
+
+# 2. String pipeline — NLP preprocessing
+raw   = ["  The Cat Sat  ", "ON the MAT!", "  python IS  GREAT  "]
+step1 = [s.strip().lower() for s in raw]
+step2 = [s.translate(str.maketrans('','','!.,')) for s in step1]
+words = [w for s in step2 for w in s.split()]   # flatten
+unique_words = sorted({w for w in words})
+print(f"\nCleaned:      {step1}")
+print(f"All words:    {words}")
+print(f"Unique sorted:{unique_words}")
+
+# 3. Dict comprehension
+skills    = ["Python", "NumPy", "Pandas", "LangChain", "PyTorch"]
+skill_len = {s: len(s) for s in skills}
+long_sk   = {k: v for k, v in skill_len.items() if v > 6}
+print(f"\nLengths: {skill_len}")
+print(f"Long:    {long_sk}")
+
+# 4. Set operations
+team_a = {"Python", "SQL", "Pandas", "Docker", "Git"}
+team_b = {"Python", "Spark", "SQL", "Kubernetes", "Scala"}
+print(f"\nBoth know:    {sorted(team_a & team_b)}")
+print(f"Only A has:   {sorted(team_a - team_b)}")
+print(f"Either knows: {sorted(team_a | team_b)}")
+
+# 5. Fibonacci generator
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+fib   = fibonacci()
+f12   = [next(fib) for _ in range(12)]
+print(f"\nFibonacci: {f12}")
+
+# 6. Batch generator (the ML data loading pattern)
+def batches(data, n):
+    for i in range(0, len(data), n):
+        yield data[i:i+n]
+
+for i, b in enumerate(batches(list(range(17)), 5)):
+    print(f"  Batch {i}: {b}")</pre></div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-y">🎯</div><div><div class="tlb">Daily challenge</div><div class="ttl">Day 1 — practice tasks</div></div></div>
+    <div class="tbody">
+      <div class="chal">
+        <h4>Challenges — complete all 6</h4>
+        <ol>
+          <li>Write a comprehension that extracts all words longer than 4 chars from a sentence, lowercased and sorted</li>
+          <li>Dict comprehension: map each word to its character count, only for words with length > 3</li>
+          <li>Given two email lists, use set ops to find: in both lists, only in list 1, unique across both</li>
+          <li>Write a <code>primes_up_to(n)</code> generator that yields prime numbers up to n (use a primality test inside)</li>
+          <li>Combine: list of sentences → split words → flatten → deduplicate → sort — all in 2-3 lines</li>
+          <li><strong>Bonus:</strong> Generator <code>running_average(nums)</code> that yields the average-so-far after each new number</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div><!-- /day1 -->
+
+<!-- ═══════════ DAY 2: OOP ═══════════ -->
+<div class="dv" id="day2">
+  <div class="dh">
+    <span class="dnum">Day 02</span>
+    <div><div class="dtit">Object-Oriented Programming — Classes, Inheritance, <strong>Special Methods</strong></div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">How PyTorch, LangChain, and scikit-learn are built. You'll subclass these every week in ML work.</div></div>
+    <button class="donebt" id="db2" onclick="markDone(2)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">🏗️</div><div><div class="tlb">Core concept</div><div class="ttl">Classes = blueprints, Objects = instances</div></div></div>
+    <div class="tbody">
+      <p class="exp">A <strong>class</strong> defines the structure (attributes) and behaviour (methods) for a type of thing. An <strong>object</strong> is one specific thing made from that class. OOP groups data and logic together — the design pattern of every Python library you'll use.</p>
+      <div class="diag">
+        <h4>Blueprint → Instances</h4>
+        <div class="frow">
+          <div class="fb hp" style="text-align:center;width:160px">class BankAccount:<br><span style="font-size:11px;color:var(--mu)">Blueprint (defined once)</span></div>
+          <div class="fa">──→ instantiate ──→</div>
+          <div>
+            <div class="fb hg" style="font-size:12px;margin-bottom:6px">taha = BankAccount("Taha", 1000)</div>
+            <div class="fb hg" style="font-size:12px">zephyr = BankAccount("Zephyr", 500)</div>
+          </div>
+        </div>
+        <div class="frow" style="margin-top:10px;font-size:12px;color:var(--mu)">
+          <div style="width:160px">Attributes: owner, balance<br>Methods: deposit(), withdraw()</div>
+          <div style="width:60px"></div>
+          <div>taha.owner="Taha", taha.balance=1000<br>zephyr.owner="Zephyr", zephyr.balance=500</div>
+        </div>
+      </div>
+      <div class="syn"><span class="k">class</span> <span class="fn">BankAccount</span>:
+    <span class="s">"""A bank account with chaining support."""</span>
+
+    bank_name = <span class="s">"PyCorp Bank"</span>  <span class="o"># class attribute — shared by all instances</span>
+
+    <span class="k">def</span> <span class="fn">__init__</span>(self, owner, balance=0):    <span class="o"># constructor</span>
+        self.owner   = owner          <span class="o"># instance attribute</span>
+        self.balance = balance
+        self.history = []             <span class="o"># each account has its OWN list</span>
+
+    <span class="k">def</span> <span class="fn">deposit</span>(self, amount):
+        <span class="k">if</span> amount &lt;= 0:
+            <span class="k">raise</span> ValueError(f<span class="s">"Amount must be positive, got {amount}"</span>)
+        self.balance += amount
+        self.history.append(("+", amount))
+        <span class="k">return</span> self              <span class="o"># return self → enables chaining!</span>
+
+    <span class="k">def</span> <span class="fn">withdraw</span>(self, amount):
+        <span class="k">if</span> amount &gt; self.balance:
+            <span class="k">raise</span> ValueError(<span class="s">"Insufficient funds"</span>)
+        self.balance -= amount
+        self.history.append(("-", amount))
+        <span class="k">return</span> self
+
+    <span class="k">def</span> <span class="fn">statement</span>(self):
+        <span class="fn">print</span>(f<span class="s">"\n── {self.owner} @ {self.bank_name} ──"</span>)
+        <span class="k">for</span> sign, amt <span class="k">in</span> self.history:
+            <span class="fn">print</span>(f<span class="s">"  {sign} ${amt}"</span>)
+        <span class="fn">print</span>(f<span class="s">"  Balance: ${self.balance}"</span>)
+
+    <span class="cm"># Special (dunder) methods — define how Python builtins work on your class</span>
+    <span class="k">def</span> <span class="fn">__repr__</span>(self):   <span class="o"># how the object looks when printed</span>
+        <span class="k">return</span> f<span class="s">"BankAccount('{self.owner}', ${self.balance})"</span>
+    <span class="k">def</span> <span class="fn">__len__</span>(self):    <span class="o"># len(account) = number of transactions</span>
+        <span class="k">return</span> <span class="fn">len</span>(self.history)
+    <span class="k">def</span> <span class="fn">__lt__</span>(self, other):  <span class="o"># enables sorting accounts by balance</span>
+        <span class="k">return</span> self.balance &lt; other.balance
+
+<span class="cm"># Method chaining — each method returns self</span>
+acct = <span class="fn">BankAccount</span>(<span class="s">"Taha"</span>, 1000)
+acct.deposit(500).deposit(200).withdraw(100).statement()
+<span class="fn">print</span>(f<span class="s">"Transactions: {len(acct)}"</span>)   <span class="o"># uses __len__</span>
+<span class="fn">print</span>(repr(acct))                    <span class="o"># uses __repr__</span></div>
+
+      <div class="icc" id="icq2">
+        <h4>🧠 Quick check <span class="hint">· click to answer</span></h4>
+        <div class="icc-q">What does <code>return self</code> at the end of a method enable?</div>
+        <div class="icc-opts">
+          <button class="icc-opt" onclick="icAns('icq2',this,0,1,'Returning self returns the object itself, so you can chain calls: account.deposit(100).withdraw(50).statement()')">A) Recursion</button>
+          <button class="icc-opt" onclick="icAns('icq2',this,1,1,'Returning self returns the object itself, so you can chain calls: account.deposit(100).withdraw(50).statement()')">B) Method chaining: obj.a().b().c()</button>
+          <button class="icc-opt" onclick="icAns('icq2',this,2,1,'Returning self returns the object itself, so you can chain calls: account.deposit(100).withdraw(50).statement()')">C) Static access</button>
+          <button class="icc-opt" onclick="icAns('icq2',this,3,1,'Returning self returns the object itself, so you can chain calls: account.deposit(100).withdraw(50).statement()')">D) Singleton pattern</button>
+        </div>
+        <div class="icc-fb" id="icfb2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-b">🧬</div><div><div class="tlb">Inheritance</div><div class="ttl">Child classes extend parent classes — the PyTorch pattern</div></div></div>
+    <div class="tbody">
+      <p class="exp"><strong>Inheritance</strong> lets a child class get all attributes and methods from a parent, then add or override its own. The keyword is <code>super()</code> to call the parent's version. This is exactly how <code>nn.Module</code> in PyTorch works.</p>
+      <div class="box bbp"><strong>The PyTorch pattern you'll write every week:</strong> <code>class MyModel(nn.Module):</code> — you inherit all training, gradient, and device management. You only write <code>def forward(self, x): return self.layers(x)</code>. Same pattern, different parent class.</div>
+      <div class="syn"><span class="k">class</span> <span class="fn">SavingsAccount</span>(<span class="fn">BankAccount</span>):     <span class="o"># inherits everything</span>
+    interest_rate = 0.05
+
+    <span class="k">def</span> <span class="fn">__init__</span>(self, owner, balance=0, goal=None):
+        <span class="k">super</span>().__init__(owner, balance)  <span class="o"># run parent's __init__ first</span>
+        self.goal = goal                  <span class="o"># then add our own attribute</span>
+
+    <span class="k">def</span> <span class="fn">apply_interest</span>(self):
+        interest = round(self.balance * self.interest_rate, 2)
+        self.deposit(interest)
+        <span class="fn">print</span>(f<span class="s">"Interest: +${interest}"</span>)
+        <span class="k">return</span> self
+
+    <span class="k">def</span> <span class="fn">progress</span>(self):               <span class="o"># NEW method — doesn't exist in parent</span>
+        <span class="k">if</span> self.goal:
+            pct = self.balance / self.goal * 100
+            bar = <span class="s">"█"</span> * <span class="fn">int</span>(pct / 5)
+            <span class="fn">print</span>(f<span class="s">"Goal ${self.goal}: [{bar:&lt;20}] {pct:.1f}%"</span>)
+
+savings = <span class="fn">SavingsAccount</span>(<span class="s">"Zephyr"</span>, 500, goal=2000)
+savings.deposit(300).apply_interest()   <span class="o"># deposit from parent, interest from child</span>
+savings.progress()
+
+<span class="cm"># isinstance checks the whole inheritance chain</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(savings, SavingsAccount))  <span class="o"># True</span>
+<span class="fn">print</span>(<span class="fn">isinstance</span>(savings, BankAccount))      <span class="o"># True — it IS a BankAccount</span></div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">💻</div><div><div class="tlb">Full working code</div><div class="ttl">Day 2 — TextProcessor with chaining and inheritance</div></div></div>
+    <div class="tbody">
+      <div class="cb"><button class="cpb" onclick="cp(this)">copy</button>
+<pre># ── Day 2: OOP ────────────────────────────────────────────
+
+class TextProcessor:
+    """A text analysis class — methods chain cleanly."""
+
+    STOP_WORDS = {"the","a","an","in","on","at","is","it","of","to","and","or","was","be"}
+
+    def __init__(self, text):
+        self.original = text
+        self.text     = text
+        self._steps   = []
+
+    def clean(self):
+        """Lowercase, strip extra whitespace, remove punctuation."""
+        import re
+        self.text  = re.sub(r'\s+', ' ', self.text.lower().strip())
+        self.text  = re.sub(r'[^\w\s]', '', self.text)
+        self._steps.append("clean")
+        return self  # enables chaining
+
+    def remove_stopwords(self):
+        words      = self.text.split()
+        self.text  = " ".join(w for w in words if w not in self.STOP_WORDS)
+        self._steps.append("remove_stop")
+        return self
+
+    def word_count(self):
+        from collections import Counter
+        return Counter(self.text.split())
+
+    def top_n(self, n=5):
+        return self.word_count().most_common(n)
+
+    def summary(self):
+        wc      = self.word_count()
+        total   = sum(wc.values())
+        unique  = len(wc)
+        print(f"\n── TextProcessor Summary ─────────────────────")
+        print(f"  Steps:  {' → '.join(self._steps)}")
+        print(f"  Words:  {total} total, {unique} unique")
+        print(f"  Top 5:  {self.top_n(5)}")
+        return self
+
+    def __repr__(self):
+        return f"TextProcessor(words={len(self.text.split())}, steps={self._steps})"
+
+    def __len__(self):
+        return len(self.text.split())
+
+
+class SentimentAnalyzer(TextProcessor):
+    """Extends TextProcessor with basic sentiment scoring."""
+
+    POSITIVE = {"great","good","excellent","amazing","love","best",
+                "fantastic","wonderful","happy","brilliant","awesome","perfect"}
+    NEGATIVE = {"bad","terrible","awful","hate","worst","horrible",
+                "poor","disappointing","boring","useless","broken","failed"}
+
+    def score(self):
+        words = self.text.split()
+        pos   = sum(1 for w in words if w in self.POSITIVE)
+        neg   = sum(1 for w in words if w in self.NEGATIVE)
+        net   = pos - neg
+        label = "POSITIVE" if net > 0 else ("NEGATIVE" if net < 0 else "NEUTRAL")
+        return {"label": label, "score": net, "+": pos, "-": neg}
+
+
+# Usage
+text = """Python is a great and amazing programming language.
+          It is the best tool for data science and machine learning.
+          Some say Java is terrible and awful but Python developers are happy."""
+
+# Chaining methods
+tp = TextProcessor(text).clean().remove_stopwords()
+tp.summary()
+print(f"Word count: {len(tp)}")
+
+# Inheritance
+sa   = SentimentAnalyzer(text).clean()
+result = sa.score()
+print(f"\nSentiment: {result['label']} (score={result['score']}, +{result['+']} -{result['-']})")
+print(f"\nRepr: {repr(tp)}")</pre></div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-y">🎯</div><div><div class="tlb">Daily challenge</div><div class="ttl">Day 2 — build an ML experiment tracker</div></div></div>
+    <div class="tbody">
+      <div class="chal">
+        <h4>Build a simplified MLflow from scratch</h4>
+        <ol>
+          <li>Class <code>Run</code>: attributes <code>run_id</code>, <code>name</code>, <code>params</code> (dict), <code>metrics</code> (dict), <code>timestamp</code></li>
+          <li>Methods: <code>log_param(k,v)</code>, <code>log_metric(k,v)</code>, <code>end()</code> — all return <code>self</code></li>
+          <li>Class <code>Experiment</code>: holds list of Runs, method <code>start_run(name)</code> returns a new Run</li>
+          <li>Method <code>best_run(metric)</code>: return the Run with highest value for that metric</li>
+          <li>Method <code>to_dataframe()</code>: return Pandas DataFrame of all runs and their metrics</li>
+          <li>Add <code>__repr__</code>, <code>__len__</code>, <code>__iter__</code> to Experiment</li>
+          <li><strong>Bonus:</strong> Add <code>save(path)</code> and <code>load(path)</code> using JSON for persistence</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div><!-- /day2 -->
+
+<!-- ═══════════ DAY 3: Modules ═══════════ -->
+<div class="dv" id="day3">
+  <div class="dh">
+    <span class="dnum">Day 03</span>
+    <div><div class="dtit">Modules · pip · <strong>Virtual Environments</strong> · Standard Library</div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">How professional Python projects are organised. Never mix package versions across projects again.</div></div>
+    <button class="donebt" id="db3" onclick="markDone(3)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">📦</div><div><div class="tlb">Imports</div><div class="ttl">Modules, packages and the four import styles</div></div></div>
+    <div class="tbody">
+      <p class="exp">A <strong>module</strong> is just a <code>.py</code> file. A <strong>package</strong> is a folder with <code>__init__.py</code>. Python ships with a huge standard library requiring no installation. <code>import</code> makes them available. Know all four import styles.</p>
+      <div class="diag">
+        <h4>Import styles</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div><div style="font-size:11px;color:var(--mu);margin-bottom:5px">Whole module</div>
+          <div class="syn" style="margin:0;font-size:11.5px;padding:9px 12px"><span class="k">import</span> math
+math.sqrt(16)</div></div>
+          <div><div style="font-size:11px;color:var(--mu);margin-bottom:5px">With alias (standard)</div>
+          <div class="syn" style="margin:0;font-size:11.5px;padding:9px 12px"><span class="k">import</span> numpy <span class="k">as</span> np
+np.array([1,2])</div></div>
+          <div><div style="font-size:11px;color:var(--mu);margin-bottom:5px">Specific names</div>
+          <div class="syn" style="margin:0;font-size:11.5px;padding:9px 12px"><span class="k">from</span> datetime <span class="k">import</span> datetime
+datetime.now()</div></div>
+          <div><div style="font-size:11px;color:var(--red);margin-bottom:5px">Everything (avoid!)</div>
+          <div class="syn" style="margin:0;font-size:11.5px;padding:9px 12px"><span class="k">from</span> math <span class="k">import</span> *
+sqrt(16)  <span class="o"># pollutes namespace</span></div></div>
+        </div>
+      </div>
+      <div class="syn"><span class="k">import</span> os, json, math, random
+<span class="k">from</span> datetime    <span class="k">import</span> datetime, timedelta
+<span class="k">from</span> pathlib     <span class="k">import</span> Path
+<span class="k">from</span> collections <span class="k">import</span> Counter, defaultdict
+<span class="k">from</span> itertools   <span class="k">import</span> combinations, chain
+
+<span class="cm"># datetime — essential for time-series and experiment logging</span>
+now  = datetime.now()
+<span class="fn">print</span>(now.strftime(<span class="s">"%Y-%m-%d %H:%M:%S"</span>))
+week = now + timedelta(days=7)
+<span class="fn">print</span>(f<span class="s">"In 7 days: {week.date()}"</span>)
+days_since = (now - datetime(<span class="n">2024</span>, <span class="n">1</span>, <span class="n">1</span>)).days
+<span class="fn">print</span>(f<span class="s">"Days since Jan 1 2024: {days_since}"</span>)
+
+<span class="cm"># Counter — word/item frequencies (huge in NLP)</span>
+words   = <span class="s">"to be or not to be that is the question"</span>.split()
+freq    = Counter(words)
+<span class="fn">print</span>(freq.most_common(<span class="n">3</span>))   <span class="o"># [('to',2),('be',2),('or',1)]</span>
+
+<span class="cm"># defaultdict — no KeyError on first access</span>
+by_len  = defaultdict(<span class="fn">list</span>)
+[by_len[<span class="fn">len</span>(w)].append(w) <span class="k">for</span> w <span class="k">in</span> <span class="fn">set</span>(words)]
+
+<span class="cm"># pathlib — modern file paths</span>
+p = Path(<span class="s">"output"</span>)
+p.mkdir(exist_ok=True)
+(p / <span class="s">"config.json"</span>).write_text(json.dumps({<span class="s">"model"</span>: <span class="s">"gpt-4"</span>}, indent=<span class="n">2</span>))
+config = json.loads((p / <span class="s">"config.json"</span>).read_text())
+<span class="fn">print</span>(config)</div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-b">🔧</div><div><div class="tlb">Package management</div><div class="ttl">pip + virtual environments — the professional setup</div></div></div>
+    <div class="tbody">
+      <p class="exp"><strong>pip</strong> installs third-party packages. A <strong>virtual environment</strong> is an isolated Python installation per project — different projects can have different (potentially conflicting) versions of the same library. Always create one before starting any project.</p>
+      <div class="diag">
+        <h4>The problem venvs solve</h4>
+        <div class="frow">
+          <div class="fb" style="text-align:center;font-size:12px">Project A<br><span style="color:var(--ac)">langchain==0.1</span><br><span style="color:var(--ac)">torch==2.0</span></div>
+          <div class="fa" style="color:var(--red)">← CONFLICT →</div>
+          <div class="fb" style="text-align:center;font-size:12px">Project B<br><span style="color:var(--ac)">langchain==0.3</span><br><span style="color:var(--ac)">torch==2.3</span></div>
+        </div>
+        <div class="frow" style="margin-top:12px">
+          <div class="fb hg" style="text-align:center;font-size:12px">venv_a/<br>langchain==0.1</div>
+          <div class="fa" style="color:var(--g)">ISOLATED ✓</div>
+          <div class="fb hg" style="text-align:center;font-size:12px">venv_b/<br>langchain==0.3</div>
+        </div>
+      </div>
+      <div class="syn"><span class="o"># Terminal commands — not Python code!</span>
+
+<span class="cm"># 1. Create virtual environment</span>
+python -m venv venv
+
+<span class="cm"># 2. Activate</span>
+source venv/bin/activate      <span class="o"># Mac / Linux</span>
+venv\Scripts\activate         <span class="o"># Windows</span>
+
+<span class="cm"># 3. Install packages for this course</span>
+pip install numpy pandas scikit-learn requests matplotlib
+pip install mlflow xgboost seaborn              <span class="o"># Week 3</span>
+pip install langchain openai faiss-cpu           <span class="o"># Week 4</span>
+
+<span class="cm"># 4. Save exact versions for sharing</span>
+pip freeze > requirements.txt
+
+<span class="cm"># 5. Collaborator reproduces your exact environment</span>
+pip install -r requirements.txt
+
+<span class="cm"># 6. Deactivate when done</span>
+deactivate</div>
+      <div class="box bbg"><strong>Pro rule:</strong> Create a <code>venv</code> before you write a single line of code. Add <code>venv/</code> to <code>.gitignore</code> (don't commit it — it's 100MB). Always commit <code>requirements.txt</code>. This is standard professional practice everywhere.</div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">💻</div><div><div class="tlb">Full working code</div><div class="ttl">Day 3 — standard library in action</div></div></div>
+    <div class="tbody">
+      <div class="cb"><button class="cpb" onclick="cp(this)">copy</button>
+<pre># ── Day 3: Modules & Standard Library ─────────────────────
+
+import os, json, random
+from datetime    import datetime, timedelta
+from pathlib     import Path
+from collections import Counter, defaultdict
+from itertools   import combinations
+
+# ── 1. pathlib + json ─────────────────────────────────────
+Path("output").mkdir(exist_ok=True)
+config = {
+    "project":  "ml-pipeline",
+    "model":    "random_forest",
+    "params":   {"n_estimators": 100, "max_depth": 5},
+    "created":  datetime.now().isoformat()
+}
+Path("output/config.json").write_text(json.dumps(config, indent=2))
+loaded = json.loads(Path("output/config.json").read_text())
+print(f"Loaded: {loaded['project']} — {loaded['params']}")
+
+# ── 2. datetime calculations ──────────────────────────────
+today = datetime.now()
+print(f"\nToday:           {today.strftime('%A, %B %d %Y')}")
+print(f"In 100 days:     {(today + timedelta(days=100)).strftime('%Y-%m-%d')}")
+print(f"Days since 2024: {(today - datetime(2024, 1, 1)).days}")
+
+# ── 3. Counter for analysis ───────────────────────────────
+tech = """python ml ai data machine learning deep learning
+          python data science numpy pandas sklearn pytorch
+          llm gpt language model transformer attention bert"""
+freq = Counter(tech.split())
+print(f"\nTop 8: {freq.most_common(8)}")
+
+# ── 4. defaultdict grouping ───────────────────────────────
+skills = [
+    ("Taha",   "Python"), ("Zephyr", "Python"), ("Taha",   "SQL"),
+    ("Zephyr", "Pandas"), ("Omar",   "Python"), ("Omar",   "SQL"),
+    ("Sara",   "Pandas"), ("Taha",   "PyTorch"),("Zephyr", "LangChain"),
+]
+by_person = defaultdict(list)
+by_skill  = defaultdict(list)
+for person, skill in skills:
+    by_person[person].append(skill)
+    by_skill[skill].append(person)
+
+print(f"\nTaha's skills:     {by_person['Taha']}")
+print(f"Who knows Python:  {by_skill['Python']}")
+
+# ── 5. itertools combinatorics ────────────────────────────
+teams   = ["Alpha", "Beta", "Gamma", "Delta", "Epsilon"]
+matches = list(combinations(teams, 2))
+print(f"\nRound-robin: {len(matches)} matches for {len(teams)} teams")
+for m in matches[:5]:
+    print(f"  {m[0]} vs {m[1]}")
+
+# ── 6. Build a config manager ─────────────────────────────
+class ConfigManager:
+    def __init__(self, path):
+        self.path = Path(path)
+        self.data = {}
+
+    def load(self):
+        if self.path.exists():
+            self.data = json.loads(self.path.read_text())
+        return self
+
+    def set(self, key, value):
+        self.data[key] = value
+        return self
+
+    def get(self, key, default=None):
+        return self.data.get(key, default)
+
+    def save(self):
+        self.path.write_text(json.dumps(self.data, indent=2))
+        return self
+
+cfg = ConfigManager("output/settings.json")
+cfg.set("lr", 0.001).set("epochs", 50).set("batch_size", 32).save()
+print(f"\nConfig: lr={cfg.get('lr')}, epochs={cfg.get('epochs')}")</pre></div>
+    </div>
+  </div>
+</div><!-- /day3 -->
+
+<!-- ═══════════ DAY 4: NumPy ═══════════ -->
+<div class="dv" id="day4">
+  <div class="dh">
+    <span class="dnum">Day 04</span>
+    <div><div class="dtit">NumPy — Fast <strong>Numerical Computing</strong></div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">Pandas, PyTorch, and scikit-learn all sit on top of NumPy arrays. This is the foundation.</div></div>
+    <button class="donebt" id="db4" onclick="markDone(4)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">⚡</div><div><div class="tlb">Why NumPy exists</div><div class="ttl">Python lists vs NumPy arrays — 100× speed difference</div></div></div>
+    <div class="tbody">
+      <p class="exp">Python lists can hold mixed types — that flexibility has a cost: each element is a full Python object. NumPy <strong>arrays</strong> store one type in contiguous memory, enabling vectorised C operations on entire arrays at once. Adding two 10M-element arrays: lists = seconds, NumPy = milliseconds.</p>
+      <div class="diag">
+        <h4>Memory layout comparison</h4>
+        <div class="frow">
+          <div style="flex:1">
+            <div style="font-size:11px;color:var(--red);margin-bottom:6px">Python list — scattered pointers</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <div class="fb" style="font-size:11px;padding:5px 9px">ptr→obj(1)</div>
+              <div class="fb" style="font-size:11px;padding:5px 9px">ptr→obj(2)</div>
+              <div class="fb" style="font-size:11px;padding:5px 9px">ptr→obj(3)</div>
+            </div>
+            <div style="font-size:11px;color:var(--mu);margin-top:4px">Each int = full Python object (~28 bytes)</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:11px;color:var(--g);margin-bottom:6px">NumPy array — contiguous C memory</div>
+            <div style="display:flex;gap:0">
+              <div class="fb hg" style="font-size:11px;padding:5px 9px;border-radius:4px 0 0 4px">1</div>
+              <div class="fb hg" style="font-size:11px;padding:5px 9px;border-radius:0;border-left:none">2</div>
+              <div class="fb hg" style="font-size:11px;padding:5px 9px;border-radius:0;border-left:none">3</div>
+              <div class="fb hg" style="font-size:11px;padding:5px 9px;border-radius:0 4px 4px 0;border-left:none">4</div>
+            </div>
+            <div style="font-size:11px;color:var(--mu);margin-top:4px">Raw int64 (8 bytes each) in one block</div>
+          </div>
+        </div>
+      </div>
+      <div class="syn"><span class="k">import</span> numpy <span class="k">as</span> np
+
+<span class="cm"># Create arrays</span>
+a = np.array([1, 2, 3, 4, 5])
+b = np.array([10, 20, 30, 40, 50])
+
+<span class="cm"># Vectorised ops — no Python loop needed (runs in C)</span>
+<span class="fn">print</span>(a + b)          <span class="o"># [11 22 33 44 55]</span>
+<span class="fn">print</span>(a * 3)          <span class="o"># [3 6 9 12 15]</span>
+<span class="fn">print</span>(a ** 2)         <span class="o"># [1 4 9 16 25]</span>
+<span class="fn">print</span>(np.sqrt(b))     <span class="o"># [3.16 4.47 5.48 6.32 7.07]</span>
+
+<span class="cm"># Array creation</span>
+zeros = np.zeros((<span class="n">3</span>, <span class="n">4</span>))             <span class="o"># 3×4 matrix of 0.0</span>
+ones  = np.ones((<span class="n">2</span>, <span class="n">2</span>))              <span class="o"># 2×2 matrix of 1.0</span>
+eye   = np.eye(<span class="n">3</span>)                    <span class="o"># 3×3 identity matrix</span>
+rng   = np.arange(<span class="n">0</span>, <span class="n">1</span>, <span class="n">0.25</span>)       <span class="o"># [0. 0.25 0.5 0.75]</span>
+lin   = np.linspace(<span class="n">0</span>, <span class="n">1</span>, <span class="n">5</span>)        <span class="o"># [0. 0.25 0.5 0.75 1.]</span>
+rand  = np.random.randn(<span class="n">3</span>, <span class="n">4</span>)       <span class="o"># 3×4 standard normals</span>
+
+<span class="cm"># 2D indexing — [row, col]</span>
+m = np.array([[<span class="n">1</span>,<span class="n">2</span>,<span class="n">3</span>],[<span class="n">4</span>,<span class="n">5</span>,<span class="n">6</span>],[<span class="n">7</span>,<span class="n">8</span>,<span class="n">9</span>]])
+<span class="fn">print</span>(m.shape)         <span class="o"># (3, 3)</span>
+<span class="fn">print</span>(m[<span class="n">1</span>, <span class="n">2</span>])        <span class="o"># 6   — row 1, col 2</span>
+<span class="fn">print</span>(m[:, <span class="n">1</span>])        <span class="o"># [2 5 8] — all rows, column 1</span>
+<span class="fn">print</span>(m[<span class="n">1</span>:, <span class="n">1</span>:])      <span class="o"># [[5 6],[8 9]] — slicing</span>
+<span class="fn">print</span>(m[m > <span class="n">5</span>])       <span class="o"># [6 7 8 9] — boolean indexing</span>
+
+<span class="cm"># Statistics (axis matters!)</span>
+data = np.random.randint(<span class="n">60</span>, <span class="n">100</span>, (<span class="n">5</span>, <span class="n">4</span>))  <span class="o"># 5 students, 4 exams</span>
+<span class="fn">print</span>(data.mean(axis=<span class="n">1</span>))  <span class="o"># avg per student (across columns)</span>
+<span class="fn">print</span>(data.mean(axis=<span class="n">0</span>))  <span class="o"># avg per exam   (across rows)</span></div>
+      <div class="icc" id="icq3">
+        <h4>🧠 Quick check <span class="hint">· click to answer</span></h4>
+        <div class="icc-q">On a 2D array with shape (5,3), what does <code>arr.mean(axis=1)</code> produce?</div>
+        <div class="icc-opts">
+          <button class="icc-opt" onclick="icAns('icq3',this,0,1,'axis=1 operates along the column direction, collapsing columns. For (5,3) you get 5 means — one per row.')">A) 3 values — mean of each column</button>
+          <button class="icc-opt" onclick="icAns('icq3',this,1,1,'axis=1 operates along the column direction, collapsing columns. For (5,3) you get 5 means — one per row.')">B) 5 values — mean of each row</button>
+          <button class="icc-opt" onclick="icAns('icq3',this,2,1,'axis=1 operates along the column direction, collapsing columns. For (5,3) you get 5 means — one per row.')">C) A single overall mean</button>
+          <button class="icc-opt" onclick="icAns('icq3',this,3,1,'axis=1 operates along the column direction, collapsing columns. For (5,3) you get 5 means — one per row.')">D) Sum of each row</button>
+        </div>
+        <div class="icc-fb" id="icfb3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">💻</div><div><div class="tlb">Full working code</div><div class="ttl">Day 4 — NumPy for ML preprocessing + neural layer</div></div></div>
+    <div class="tbody">
+      <div class="cb"><button class="cpb" onclick="cp(this)">copy</button>
+<pre># ── Day 4: NumPy ──────────────────────────────────────────
+# pip install numpy
+
+import numpy as np
+import time
+
+np.random.seed(42)
+
+# ── 1. Speed demo ─────────────────────────────────────────
+n    = 1_000_000
+arr  = np.random.randn(n)
+t    = time.time(); _ = [x**2 for x in arr]; loop_t = time.time()-t
+t    = time.time(); _ = arr**2;               np_t   = time.time()-t
+print(f"Python loop: {loop_t:.3f}s")
+print(f"NumPy:       {np_t:.5f}s  ← ~{loop_t/np_t:.0f}× faster")
+
+# ── 2. Feature normalisation (core ML preprocessing) ──────
+feat = np.array([100., 200., 150., 300., 50., 250., 175.])
+# Min-Max scaling → [0, 1]
+norm_mm  = (feat - feat.min()) / (feat.max() - feat.min())
+# Z-score → mean=0, std=1
+norm_z   = (feat - feat.mean()) / feat.std()
+print(f"\nOriginal:  {feat}")
+print(f"Min-Max:   {np.round(norm_mm, 3)}")
+print(f"Z-score:   {np.round(norm_z, 3)}")
+
+# ── 3. Matrix ops — 2D array analysis ─────────────────────
+# Simulate: 8 students, 5 exam scores
+scores = np.random.randint(50, 100, (8, 5))
+print(f"\nScores (8×5):\n{scores}")
+print(f"Per-student avg: {scores.mean(axis=1).round(1)}")
+print(f"Per-exam avg:    {scores.mean(axis=0).round(1)}")
+print(f"Top student:     Student {scores.mean(axis=1).argmax()}")
+print(f"Hardest exam:    Exam {scores.mean(axis=0).argmin()}")
+
+# Boolean mask — find students with any failing grade
+failed = scores < 60
+print(f"\nStudents with ≥1 fail: {np.any(failed, axis=1).sum()}")
+
+# ── 4. Neural network layer from scratch ──────────────────
+def relu(z):     return np.maximum(0, z)
+def sigmoid(z):  return 1 / (1 + np.exp(-z))
+def softmax(z):
+    e = np.exp(z - z.max())   # subtract max for numerical stability
+    return e / e.sum()
+
+# 3-input → 4-neuron dense layer  (He initialisation)
+W = np.random.randn(4, 3) * np.sqrt(2/3)
+b = np.zeros(4)
+x = np.array([1.0, -0.5, 0.8])
+
+z      = W @ x + b          # matrix multiply
+output = relu(z)
+print(f"\nLayer input:  {x}")
+print(f"Pre-ReLU (z): {z.round(4)}")
+print(f"After ReLU:   {output.round(4)}")
+
+# Softmax for 3-class output
+logits = np.array([2.0, 1.0, 0.1])
+probs  = softmax(logits)
+print(f"\nLogits:        {logits}")
+print(f"Probabilities: {probs.round(4)}")
+print(f"Sum:           {probs.sum():.6f}  ← must be 1.0")</pre></div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-y">🎯</div><div><div class="tlb">Daily challenge</div><div class="ttl">Day 4 — implement and verify</div></div></div>
+    <div class="tbody">
+      <div class="chal">
+        <h4>Challenges</h4>
+        <ol>
+          <li>Create a (10, 5) random int array — 10 students, 5 exams. Compute: per-student mean, per-exam mean, overall stats</li>
+          <li>Find the indices of top 3 students using <code>argsort()</code></li>
+          <li>Implement min-max normalisation from scratch (no sklearn)</li>
+          <li>Implement z-score normalisation from scratch</li>
+          <li>Build a 2-layer network: 4→8 (ReLU) → 3 (Softmax). Verify softmax outputs sum to 1.0</li>
+          <li>Time the difference between a Python loop and NumPy for squaring 1M numbers</li>
+          <li><strong>Bonus:</strong> Implement <code>cosine_similarity(a, b)</code> using only NumPy. Verify that <code>cosine_similarity(v, v) == 1.0</code></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div><!-- /day4 -->
+
+<!-- ═══════════ DAY 5: Pandas ═══════════ -->
+<div class="dv" id="day5">
+  <div class="dh">
+    <span class="dnum">Day 05</span>
+    <div><div class="dtit">Pandas — <strong>DataFrames</strong> and Data Analysis</div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">The most important tool in data science. Every CSV, SQL result, and API response becomes a DataFrame.</div></div>
+    <button class="donebt" id="db5" onclick="markDone(5)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">🐼</div><div><div class="tlb">Core abstraction</div><div class="ttl">DataFrames — labelled 2D arrays with SQL-like querying</div></div></div>
+    <div class="tbody">
+      <p class="exp">A <strong>DataFrame</strong> is a table: rows × named columns, each column with its own type. Pandas wraps NumPy and adds SQL-like querying, grouping, merging, and reshaping. Everything you'd do in Excel or SQL, but in code — reproducible, scriptable, and 1000× faster on large data.</p>
+      <div class="diag">
+        <h4>DataFrame anatomy</h4>
+        <div style="overflow-x:auto">
+          <table class="ctab" style="margin:0">
+            <tr><th>Index</th><th>name (object)</th><th>score (int64)</th><th>grade (cat)</th><th>passed (bool)</th></tr>
+            <tr><td>0</td><td>Taha</td><td>95</td><td>A</td><td>True</td></tr>
+            <tr><td>1</td><td>Zephyr</td><td>88</td><td>B</td><td>True</td></tr>
+            <tr><td>2</td><td>Sara</td><td>62</td><td>D</td><td>True</td></tr>
+            <tr><td>3</td><td>Omar</td><td>45</td><td>F</td><td>False</td></tr>
+          </table>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px">
+          <div class="fb hp" style="text-align:center;font-size:11px">df.shape → (4,4)</div>
+          <div class="fb hg" style="text-align:center;font-size:11px">df.dtypes → column types</div>
+          <div class="fb hy" style="text-align:center;font-size:11px">df.describe() → stats</div>
+        </div>
+      </div>
+      <div class="syn"><span class="k">import</span> pandas <span class="k">as</span> pd
+
+df = pd.DataFrame({
+    <span class="s">"name"</span>:  [<span class="s">"Taha"</span>, <span class="s">"Zephyr"</span>, <span class="s">"Sara"</span>, <span class="s">"Omar"</span>, <span class="s">"Lena"</span>],
+    <span class="s">"score"</span>: [<span class="n">95</span>, <span class="n">88</span>, <span class="n">72</span>, <span class="n">45</span>, <span class="n">91</span>],
+    <span class="s">"grade"</span>: [<span class="s">"A"</span>, <span class="s">"B"</span>, <span class="s">"C"</span>, <span class="s">"F"</span>, <span class="s">"A"</span>],
+    <span class="s">"year"</span>:  [<span class="n">3</span>, <span class="n">2</span>, <span class="n">3</span>, <span class="n">1</span>, <span class="n">2</span>],
+})
+
+<span class="cm"># Select</span>
+df[<span class="s">"score"</span>]             <span class="o"># Series (1 column)</span>
+df[[<span class="s">"name"</span>, <span class="s">"score"</span>]]   <span class="o"># DataFrame (2 columns)</span>
+
+<span class="cm"># Filter rows (boolean indexing)</span>
+top    = df[df[<span class="s">"score"</span>] >= <span class="n">90</span>]
+yr2_3  = df[df[<span class="s">"year"</span>].isin([<span class="n">2</span>, <span class="n">3</span>])]
+hi_yr3 = df[(df[<span class="s">"year"</span>] == <span class="n">3</span>) &amp; (df[<span class="s">"score"</span>] >= <span class="n">80</span>)]
+
+<span class="cm"># Add computed columns</span>
+df[<span class="s">"passed"</span>]  = df[<span class="s">"score"</span>] >= <span class="n">60</span>
+df[<span class="s">"bonus"</span>]   = df[<span class="s">"score"</span>].apply(<span class="k">lambda</span> x: x * <span class="n">1.1</span> <span class="k">if</span> x > <span class="n">90</span> <span class="k">else</span> x)
+df[<span class="s">"rank"</span>]    = df[<span class="s">"score"</span>].rank(ascending=False).astype(int)
+
+<span class="cm"># GroupBy — like SQL GROUP BY</span>
+by_grade = df.groupby(<span class="s">"grade"</span>)[<span class="s">"score"</span>].agg([<span class="s">"mean"</span>, <span class="s">"count"</span>])
+by_year  = df.groupby(<span class="s">"year"</span>)[<span class="s">"score"</span>].describe()
+
+<span class="cm"># loc vs iloc</span>
+df.loc[<span class="n">0</span>, <span class="s">"name"</span>]               <span class="o"># label-based: row label 0, col "name"</span>
+df.iloc[<span class="n">0</span>, <span class="n">0</span>]                   <span class="o"># position-based: row 0, col 0</span>
+df.loc[df[<span class="s">"score"</span>] > <span class="n">80</span>, [<span class="s">"name"</span>, <span class="s">"score"</span>]]  <span class="o"># filtered subset</span></div>
+
+      <div class="icc" id="icq4">
+        <h4>🧠 Quick check <span class="hint">· click to answer</span></h4>
+        <div class="icc-q">What does <code>df.groupby('grade')['score'].agg(['mean','count'])</code> produce?</div>
+        <div class="icc-opts">
+          <button class="icc-opt" onclick="icAns('icq4',this,0,2,'groupby splits by grade values, then agg computes both mean and count per group. Result is a DataFrame indexed by grade.')">A) A single mean value</button>
+          <button class="icc-opt" onclick="icAns('icq4',this,1,2,'groupby splits by grade values, then agg computes both mean and count per group. Result is a DataFrame indexed by grade.')">B) A Series of mean scores</button>
+          <button class="icc-opt" onclick="icAns('icq4',this,2,2,'groupby splits by grade values, then agg computes both mean and count per group. Result is a DataFrame indexed by grade.')">C) DataFrame with mean and count columns, indexed by grade</button>
+          <button class="icc-opt" onclick="icAns('icq4',this,3,2,'groupby splits by grade values, then agg computes both mean and count per group. Result is a DataFrame indexed by grade.')">D) An error — can't use two agg functions</button>
+        </div>
+        <div class="icc-fb" id="icfb4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-b">🧹</div><div><div class="tlb">Data cleaning</div><div class="ttl">The real 80% of data science work</div></div></div>
+    <div class="tbody">
+      <p class="exp">Real data is messy: missing values, wrong types, outliers, duplicates, inconsistent strings. Pandas has a complete toolkit. You'll use all of these on every project.</p>
+      <div class="syn"><span class="cm"># Step 1: Understand the mess</span>
+df.info()                         <span class="o"># shape, dtypes, null counts</span>
+df.isnull().sum()                 <span class="o"># nulls per column</span>
+df.duplicated().sum()             <span class="o"># duplicate rows</span>
+df.describe()                     <span class="o"># stats — spot outliers via min/max</span>
+df.nunique()                      <span class="o"># unique values per column</span>
+
+<span class="cm"># Step 2: Fix missing values</span>
+df[<span class="s">"age"</span>].fillna(df[<span class="s">"age"</span>].median(), inplace=True)
+df[<span class="s">"city"</span>].fillna(<span class="s">"Unknown"</span>, inplace=True)
+df.dropna(subset=[<span class="s">"name"</span>], inplace=True)   <span class="o"># drop rows missing name</span>
+
+<span class="cm"># Group-aware fill (fill with group median — smarter!)</span>
+df[<span class="s">"age"</span>] = df.groupby(<span class="s">"dept"</span>)[<span class="s">"age"</span>].transform(<span class="k">lambda</span> x: x.fillna(x.median()))
+
+<span class="cm"># Step 3: Fix types</span>
+df[<span class="s">"price"</span>] = pd.to_numeric(df[<span class="s">"price"</span>], errors=<span class="s">"coerce"</span>)  <span class="o"># bad → NaN</span>
+df[<span class="s">"date"</span>]  = pd.to_datetime(df[<span class="s">"date"</span>],  errors=<span class="s">"coerce"</span>)
+
+<span class="cm"># Step 4: Clean strings</span>
+df[<span class="s">"name"</span>]  = df[<span class="s">"name"</span>].str.strip().str.title()
+df[<span class="s">"email"</span>] = df[<span class="s">"email"</span>].str.lower().str.strip()
+
+<span class="cm"># Step 5: Remove outliers (IQR method)</span>
+Q1, Q3  = df[<span class="s">"score"</span>].quantile(0.25), df[<span class="s">"score"</span>].quantile(0.75)
+IQR     = Q3 - Q1
+df_clean = df[df[<span class="s">"score"</span>].between(Q1 - 1.5*IQR, Q3 + 1.5*IQR)]</div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">💻</div><div><div class="tlb">Full working code</div><div class="ttl">Day 5 — complete data analysis pipeline</div></div></div>
+    <div class="tbody">
+      <div class="cb"><button class="cpb" onclick="cp(this)">copy</button>
+<pre># ── Day 5: Pandas ─────────────────────────────────────────
+# pip install pandas numpy
+
+import pandas as pd
+import numpy as np
+
+np.random.seed(42)
+n = 80
+
+# ── Build a realistic messy dataset ───────────────────────
+df = pd.DataFrame({
+    "student_id":  range(1001, 1001+n),
+    "name":        [f"Student_{i:03d}" for i in range(n)],
+    "math":        np.random.randint(45, 100, n).astype(float),
+    "science":     np.random.randint(50, 100, n).astype(float),
+    "english":     np.random.randint(55, 100, n).astype(float),
+    "year":        np.random.choice([1,2,3,4], n),
+    "scholarship": np.random.choice([True,False], n, p=[0.2,0.8]),
+})
+# Inject mess
+df.loc[np.random.choice(n,8), "math"]     = np.nan
+df.loc[np.random.choice(n,5), "science"]  = np.nan
+df.loc[np.random.choice(n,3), "english"]  = 999    # data entry error
+
+print("── Raw Data ──────────────────────────────────────")
+print(f"Shape: {df.shape}")
+print(f"Missing:\n{df.isnull().sum()}")
+print(f"english max: {df['english'].max()} (suspicious?)")
+
+# ── Clean ─────────────────────────────────────────────────
+df = df[df["english"] <= 100]                              # remove outlier
+df["math"].fillna(
+    df.groupby("year")["math"].transform("median"), inplace=True)
+df["science"].fillna(df["science"].median(), inplace=True)
+
+# ── Feature engineering ───────────────────────────────────
+subjects   = ["math","science","english"]
+df["avg"]  = df[subjects].mean(axis=1).round(2)
+df["total"]= df[subjects].sum(axis=1)
+df["grade"]= pd.cut(df["avg"],
+                     bins=[0,60,70,80,90,101],
+                     labels=["F","D","C","B","A"])
+df["rank"] = df["avg"].rank(method="dense", ascending=False).astype(int)
+
+# ── Analysis ──────────────────────────────────────────────
+print("\n── Grade Distribution ────────────────────────────")
+print(df["grade"].value_counts().sort_index())
+
+print("\n── Stats by Year ─────────────────────────────────")
+print(df.groupby("year")["avg"].agg(["mean","median","min","max"]).round(2))
+
+print("\n── Correlation (which subjects correlate?) ───────")
+print(df[subjects].corr().round(3))
+
+print("\n── Scholarship vs Regular ────────────────────────")
+grp = df.groupby("scholarship")["avg"].agg(["mean","count"]).round(2)
+print(grp)
+
+print("\n── Top 5 Students ────────────────────────────────")
+cols = ["name","year","math","science","english","avg","grade"]
+print(df.nlargest(5,"avg")[cols].to_string(index=False))
+
+# Save
+df.to_csv("students_clean.csv", index=False)
+print(f"\n✓ Saved {len(df)} rows to students_clean.csv")</pre></div>
+    </div>
+  </div>
+</div><!-- /day5 -->
+
+<!-- ═══════════ DAY 6: APIs ═══════════ -->
+<div class="dv" id="day6">
+  <div class="dh">
+    <span class="dnum">Day 06</span>
+    <div><div class="dtit">APIs · <strong>requests</strong> · JSON · Error handling with retries</div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">How your Python code talks to the internet. OpenAI, GitHub, weather APIs — all the same pattern.</div></div>
+    <button class="donebt" id="db6" onclick="markDone(6)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">🌐</div><div><div class="tlb">HTTP fundamentals</div><div class="ttl">The request / response cycle</div></div></div>
+    <div class="tbody">
+      <p class="exp">An <strong>API</strong> is a contract between client and server: "send me this request, I'll return this response." Every call to OpenAI's GPT-4, GitHub's API, or your own model endpoint uses the same HTTP request/response model. The response is almost always <strong>JSON</strong> — which Python handles as a dict.</p>
+      <div class="diag">
+        <h4>Request → Response cycle</h4>
+        <div class="frow">
+          <div class="fb hp" style="text-align:center">Your Python<br>script</div>
+          <div class="fa">── GET /v1/forecast?lat=41.88 ──→</div>
+          <div class="fb hg" style="text-align:center">API Server<br>(Open-Meteo)</div>
+        </div>
+        <div class="frow" style="margin-top:6px">
+          <div style="width:100px"></div>
+          <div class="fa">← 200 OK  {"temperature": 22, "wind": 15} ───</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px">
+          <div class="fb hg" style="text-align:center;font-size:11px">200 OK<br>success</div>
+          <div class="fb hg" style="text-align:center;font-size:11px">201 Created<br>POST success</div>
+          <div class="fb" style="text-align:center;font-size:11px;border-color:rgba(248,113,113,.3);color:var(--red)">404 Not Found<br>bad URL</div>
+          <div class="fb hy" style="text-align:center;font-size:11px">429 Rate Limit<br>slow down</div>
+        </div>
+      </div>
+      <div class="syn"><span class="k">import</span> requests
+
+<span class="cm"># GET request — fetch data</span>
+url      = <span class="s">"https://api.open-meteo.com/v1/forecast"</span>
+params   = {<span class="s">"latitude"</span>: 41.88, <span class="s">"longitude"</span>: -87.63, <span class="s">"current_weather"</span>: True}
+response = requests.get(url, params=params, timeout=10)
+
+<span class="fn">print</span>(response.status_code)          <span class="o"># 200</span>
+data    = response.json()              <span class="o"># → Python dict automatically</span>
+weather = data[<span class="s">"current_weather"</span>]
+<span class="fn">print</span>(f<span class="s">"Chicago: {weather['temperature']}°C"</span>)
+
+<span class="cm"># Always handle errors properly</span>
+<span class="k">try</span>:
+    r = requests.get(url, params=params, timeout=5)
+    r.raise_for_status()             <span class="o"># raises HTTPError for 4xx/5xx</span>
+    data = r.json()
+<span class="k">except</span> requests.exceptions.ConnectionError:
+    <span class="fn">print</span>(<span class="s">"No internet connection"</span>)
+<span class="k">except</span> requests.exceptions.Timeout:
+    <span class="fn">print</span>(<span class="s">"Request timed out after 5s"</span>)
+<span class="k">except</span> requests.exceptions.HTTPError <span class="k">as</span> e:
+    <span class="fn">print</span>(f<span class="s">"HTTP {e.response.status_code}: {e}"</span>)
+<span class="k">except</span> requests.exceptions.RequestException <span class="k">as</span> e:
+    <span class="fn">print</span>(f<span class="s">"Request failed: {e}"</span>)</div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-g">💻</div><div><div class="tlb">Full working code</div><div class="ttl">Day 6 — production-grade API client with retries</div></div></div>
+    <div class="tbody">
+      <div class="cb"><button class="cpb" onclick="cp(this)">copy</button>
+<pre># ── Day 6: APIs and requests ──────────────────────────────
+# pip install requests pandas
+
+import requests, json, time
+import pandas as pd
+from pathlib import Path
+
+class APIClient:
+    """Reusable HTTP client with retry logic and error handling."""
+
+    def __init__(self, base_url, headers=None, max_retries=3):
+        self.base     = base_url.rstrip("/")
+        self.session  = requests.Session()
+        self.session.headers.update(headers or {})
+        self.retries  = max_retries
+
+    def get(self, endpoint, params=None, timeout=10):
+        url = f"{self.base}/{endpoint.lstrip('/')}"
+        for attempt in range(self.retries):
+            try:
+                r = self.session.get(url, params=params, timeout=timeout)
+                r.raise_for_status()
+                return r.json()
+            except requests.exceptions.HTTPError as e:
+                code = e.response.status_code
+                if code == 429:                      # rate limited
+                    wait = 2 ** attempt
+                    print(f"  Rate limited. Waiting {wait}s...")
+                    time.sleep(wait)
+                elif code >= 500:                    # server error — retry
+                    print(f"  Server error {code}, retry {attempt+1}")
+                    time.sleep(1)
+                else:
+                    raise                            # 4xx client error — don't retry
+            except requests.exceptions.Timeout:
+                print(f"  Timeout attempt {attempt+1}/{self.retries}")
+        raise RuntimeError(f"Failed after {self.retries} attempts")
+
+
+# ── Weather comparison ─────────────────────────────────────
+api = APIClient("https://api.open-meteo.com")
+cities = [
+    ("Chicago",  41.8781, -87.6298),
+    ("New York", 40.7128, -74.0060),
+    ("London",   51.5074,  -0.1278),
+    ("Tokyo",    35.6762, 139.6503),
+    ("Sydney",  -33.8688, 151.2093),
+]
+
+records = []
+for city, lat, lon in cities:
+    try:
+        data = api.get("/v1/forecast", params={
+            "latitude": lat, "longitude": lon, "current_weather": True
+        })
+        w = data["current_weather"]
+        records.append({
+            "city":     city,
+            "temp_c":   w["temperature"],
+            "temp_f":   round(w["temperature"] * 9/5 + 32, 1),
+            "wind_kmh": w["windspeed"],
+            "is_day":   bool(w.get("is_day", 1)),
+        })
+        print(f"  ✓ {city:<12} {w['temperature']}°C")
+    except Exception as e:
+        print(f"  ✗ {city}: {e}")
+
+df = pd.DataFrame(records)
+print("\n── Weather Comparison ───────────────────────────")
+print(df.sort_values("temp_c", ascending=False).to_string(index=False))
+
+# ── JSONPlaceholder for practice (free API, no key) ───────
+jp    = APIClient("https://jsonplaceholder.typicode.com")
+posts = jp.get("/posts")
+users = jp.get("/users")
+
+posts_df = pd.DataFrame(posts)
+users_df = pd.DataFrame(users)[["id","name","email","username"]]
+merged   = posts_df.merge(users_df, left_on="userId", right_on="id")
+print("\n── Most Active Users ─────────────────────────────")
+print(merged.groupby("name").size().sort_values(ascending=False).head(5))
+
+# Save
+Path("results").mkdir(exist_ok=True)
+df.to_csv("results/weather.csv", index=False)
+merged.to_csv("results/posts.csv", index=False)
+print("\n✓ Saved to results/")</pre></div>
+    </div>
+  </div>
+</div><!-- /day6 -->
+
+<!-- ═══════════ DAY 7: Regex + Project ═══════════ -->
+<div class="dv" id="day7">
+  <div class="dh">
+    <span class="dnum">Day 07</span>
+    <div><div class="dtit">Regex · <strong>Week 2 Project</strong>: Data Collection Pipeline</div>
+    <div style="font-size:13px;color:var(--mu);margin-top:4px">Pattern matching in text + putting everything from Week 2 together in one real project.</div></div>
+    <button class="donebt" id="db7" onclick="markDone(7)">Mark done</button>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-p">🔍</div><div><div class="tlb">Pattern matching</div><div class="ttl">Regex — 10 patterns cover 90% of real use cases</div></div></div>
+    <div class="tbody">
+      <p class="exp">Regular expressions match patterns in text: emails, phone numbers, URLs, dates — anything with predictable structure. Used in NLP preprocessing, data cleaning, log parsing, and input validation.</p>
+      <table class="ctab">
+        <tr><th>Pattern</th><th>Meaning</th><th>Matches</th></tr>
+        <tr><td>\d</td><td>Any digit 0–9</td><td>\d+ → "42", "100", "9"</td></tr>
+        <tr><td>\w</td><td>Word char (letter/digit/_)</td><td>\w+ → "hello_world"</td></tr>
+        <tr><td>\s</td><td>Whitespace</td><td>\s+ → "   ", "\t"</td></tr>
+        <tr><td>.</td><td>Any char except newline</td><td>c.t → "cat","cut","c3t"</td></tr>
+        <tr><td>+</td><td>1 or more</td><td>\d+ → "1","42","999"</td></tr>
+        <tr><td>*</td><td>0 or more</td><td>ab* → "a","ab","abb"</td></tr>
+        <tr><td>?</td><td>0 or 1 (optional)</td><td>colou?r → "color","colour"</td></tr>
+        <tr><td>^  $</td><td>Start / End of string</td><td>^\d+ → starts with digits</td></tr>
+        <tr><td>[]</td><td>Character class</td><td>[aeiou] → any vowel</td></tr>
+        <tr><td>()</td><td>Capture group</td><td>(\d+)-(\w+) → two groups</td></tr>
+      </table>
+      <div class="syn"><span class="k">import</span> re
+
+text = <span class="s">"""Contact us at support@company.com or sales@org.net.
+         Call +1-312-555-9876 or (800) 555-1234.
+         Visit https://company.com/api/v2 or http://docs.co
+         Date: 2024-03-15, Order: #ORD-20240315-4892"""</span>
+
+<span class="cm"># findall — returns all matches as a list of strings</span>
+emails = re.findall(<span class="s">r'[\w.-]+@[\w.-]+\.\w+'</span>, text)
+phones = re.findall(<span class="s">r'\+?\d[\d\s()\-]{8,}'</span>, text)
+urls   = re.findall(<span class="s">r'https?://[\w./-]+'</span>, text)
+dates  = re.findall(<span class="s">r'\d{4}-\d{2}-\d{2}'</span>, text)
+
+<span class="cm"># search — first match only, returns match object</span>
+order  = re.search(<span class="s">r'#(ORD-\S+)'</span>, text)
+<span class="k">if</span> order:
+    <span class="fn">print</span>(order.group(<span class="n">1</span>))   <span class="o"># group(1) = first capture group</span>
+
+<span class="cm"># sub — replace / redact</span>
+clean  = re.sub(<span class="s">r'[\w.-]+@[\w.-]+\.\w+'</span>, <span class="s">'[EMAIL]'</span>, text)
+clean  = re.sub(<span class="s">r'https?://\S+'</span>, <span class="s">'[URL]'</span>, clean)
+
+<span class="cm"># compile — faster when reusing the same pattern</span>
+email_re = re.compile(<span class="s">r'^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$'</span>)
+<span class="fn">print</span>(email_re.match(<span class="s">"taha@example.com"</span>))  <span class="o"># Match</span>
+<span class="fn">print</span>(email_re.match(<span class="s">"not-an-email"</span>))        <span class="o"># None</span>
+
+<span class="cm"># groups — extract parts of a pattern</span>
+date_re = re.compile(<span class="s">r'(\d{4})-(\d{2})-(\d{2})'</span>)
+m = date_re.search(<span class="s">"Date: 2024-03-15"</span>)
+<span class="fn">print</span>(m.group(<span class="n">1</span>), m.group(<span class="n">2</span>), m.group(<span class="n">3</span>))   <span class="o"># 2024 03 15</span></div>
+
+      <div class="icc" id="icq5">
+        <h4>🧠 Quick check <span class="hint">· click to answer</span></h4>
+        <div class="icc-q">What does <code>re.findall(r'\d+', 'abc 42 def 7 ghi 100')</code> return?</div>
+        <div class="icc-opts">
+          <button class="icc-opt" onclick="icAns('icq5',this,0,0,'re.findall returns all non-overlapping matches as strings. \\d+ matches one or more digits.')">A) ['42', '7', '100']</button>
+          <button class="icc-opt" onclick="icAns('icq5',this,1,0,'re.findall returns all non-overlapping matches as strings. \\d+ matches one or more digits.')">B) [42, 7, 100]</button>
+          <button class="icc-opt" onclick="icAns('icq5',this,2,0,'re.findall returns all non-overlapping matches as strings. \\d+ matches one or more digits.')">C) ['42']</button>
+          <button class="icc-opt" onclick="icAns('icq5',this,3,0,'re.findall returns all non-overlapping matches as strings. \\d+ matches one or more digits.')">D) [3, 1, 3]  (positions)</button>
+        </div>
+        <div class="icc-fb" id="icfb5"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tc">
+    <div class="thead"><div class="tico ic-y">🚀</div><div><div class="tlb">Week 2 project</div><div class="ttl">End-to-end data collection and analysis pipeline</div></div></div>
+    <div class="tbody">
+      <div class="proj">
+        <h4>🚀 Project: Contact & Content Pipeline (90 min)</h4>
+        <p>Uses: OOP (Day 2), standard library (Day 3), Pandas (Day 5), APIs (Day 6), Regex (Day 7).</p>
+        <ol>
+          <li>Use JSONPlaceholder API — fetch <code>/users</code>, <code>/posts</code>, <code>/todos</code></li>
+          <li>Load all three into DataFrames and merge via userId</li>
+          <li>Regex tasks: validate all email addresses, extract website domains from the <code>website</code> column, find usernames containing numbers</li>
+          <li>Clean: strip whitespace, title-case names, handle any nulls</li>
+          <li>Analysis: posts per user, todo completion rate per user, most active user overall</li>
+          <li>Wrap in a class <code>DataPipeline</code> with methods: <code>collect()</code>, <code>clean()</code>, <code>analyse()</code>, <code>export(path)</code> — each returns <code>self</code> for chaining</li>
+          <li>Export: clean CSV + analysis summary JSON</li>
+          <li><strong>Bonus:</strong> Add a <code>stream_users()</code> generator that yields one user dict at a time with their stats attached</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div><!-- /day7 -->
+
+</div><!-- /learn -->
+
+<!-- ======== QUIZZES SECTION ======== -->
+<div class="sec" id="quizzes">
+  <div class="scoreln">Score: <span class="sc" id="qs">0</span> / <span id="qt">0</span></div>
+  <div id="qc"></div>
+</div>
+
+<!-- ======== EXERCISES SECTION ======== -->
+<div class="sec" id="exercises">
+
+<div class="ex">
+  <div class="exn">Exercise 01 · Comprehensions + Sets</div>
+  <div class="ext">Product catalogue transformer</div>
+  <span class="extg etg-e">Easy</span>
+  <div class="exd">Given a list of product dicts <code>[{"name":"apple","price":1.2,"qty":5,"category":"fruit"}, ...]</code> with 12 items (mix of fruit, vegetable, dairy):</div>
+  <ol class="exs">
+    <li>List comp: names of all products with <code>price > 2.0</code>, sorted alphabetically</li>
+    <li>Dict comp: <code>{name: price*qty}</code> — total value per product</li>
+    <li>Filtered dict comp: only products where <code>total_value > 10</code> AND <code>category == "fruit"</code></li>
+    <li>Report comp: list of formatted strings like <code>"apple: $6.00 (5 units) — fruit"</code></li>
+    <li>Set comp: all unique categories in the catalogue</li>
+    <li>Generator: <code>low_stock(products, threshold=3)</code> yielding dicts for products with qty &lt; threshold</li>
+  </ol>
+  <div class="exh"><strong>Hint:</strong> Report comp: <code>[f"{p['name']}: ${p['price']*p['qty']:.2f} ({p['qty']} units) — {p['category']}" for p in products]</code></div>
+  <div class="exb"><strong>Bonus:</strong> Replicate ALL steps using Pandas. Create a DataFrame from the list, use <code>.query()</code>, <code>.apply()</code>, and <code>.groupby()</code> to get the same results. Compare readability.</div>
+</div>
+
+<div class="ex">
+  <div class="exn">Exercise 02 · OOP + Persistence</div>
+  <div class="ext">ML Experiment Tracker</div>
+  <span class="extg etg-m">Intermediate</span>
+  <div class="exd">Build a simplified MLflow from scratch — a system that logs and compares ML experiments:</div>
+  <ol class="exs">
+    <li>Class <code>Run</code>: <code>run_id</code>, <code>name</code>, <code>params</code> (dict), <code>metrics</code> (dict), <code>start_time</code>, <code>status</code></li>
+    <li>Methods: <code>log_param(k,v)</code>, <code>log_metric(k,v)</code>, <code>end()</code> — all return <code>self</code></li>
+    <li>Class <code>Experiment</code>: holds Runs, method <code>start_run(name)</code> returns new Run</li>
+    <li><code>best_run(metric)</code>: returns Run with the highest value for that metric key</li>
+    <li><code>to_dataframe()</code>: returns Pandas DataFrame of all runs and all their metrics</li>
+    <li><code>__repr__</code>, <code>__len__</code>, <code>__iter__</code> on Experiment</li>
+    <li><code>save(path)</code> + <code>load(path)</code> using JSON</li>
+  </ol>
+  <div class="exh"><strong>Hint:</strong> For <code>best_run</code>: <code>max(self.runs, key=lambda r: r.metrics.get(metric, float('-inf')))</code></div>
+  <div class="exb"><strong>Bonus:</strong> Add a context manager so you can write: <code>with exp.start_run("rf_v1") as run: run.log_param("n",100)</code>. The run auto-ends when the with block exits. Implement <code>__enter__</code> and <code>__exit__</code>.</div>
+</div>
+
+<div class="ex">
+  <div class="exn">Exercise 03 · NumPy</div>
+  <div class="ext">3-Layer Neural Network Forward Pass</div>
+  <span class="extg etg-h">Hard</span>
+  <div class="exd">Implement a 3-layer neural network using <strong>only NumPy</strong> — no PyTorch, no sklearn. This is exactly what PyTorch does internally:</div>
+  <ol class="exs">
+    <li>Layer 1: 4 inputs → 8 neurons, He init, ReLU activation</li>
+    <li>Layer 2: 8 → 6 neurons, He init, ReLU activation</li>
+    <li>Layer 3: 6 → 3 neurons (3 classes), Softmax activation</li>
+    <li>He initialisation: <code>W = np.random.randn(out, in) * sqrt(2/in)</code></li>
+    <li>Implement: <code>relu(z)</code>, <code>sigmoid(z)</code>, <code>softmax(z)</code> as separate functions</li>
+    <li>Forward pass: input x (4,) → probs (3,). Verify softmax outputs sum to 1.0</li>
+    <li>Run forward pass on 100 random inputs (batch mode using matrix multiply)</li>
+  </ol>
+  <div class="exsc">relu    = lambda z: np.maximum(0, z)
+sigmoid = lambda z: 1 / (1 + np.exp(-z))
+softmax = lambda z: (e := np.exp(z - z.max())) / e.sum()  # stable</div>
+  <div class="exb"><strong>Bonus:</strong> Implement one step of backprop — compute the gradient of the ReLU layer (hint: it's 1 where z > 0, else 0). Multiply through to get gradient w.r.t. W.</div>
+</div>
+
+<div class="ex">
+  <div class="exn">Exercise 04 · Pandas</div>
+  <div class="ext">Titanic Survival Analysis</div>
+  <span class="extg etg-m">Intermediate</span>
+  <div class="exd">Full analysis pipeline on the Titanic dataset — the classic data science benchmark:</div>
+  <div class="exsc">import seaborn as sns
+df = sns.load_dataset("titanic")  # or from Kaggle</div>
+  <ol class="exs">
+    <li>Inspect: shape, dtypes, null counts per column (which columns have &gt;20% missing?)</li>
+    <li>Clean age: fill missing with <strong>median within each passenger class</strong> using <code>groupby + transform</code></li>
+    <li>Engineer: <code>family_size = sibsp + parch + 1</code>, <code>is_alone = family_size == 1</code>, age bins (child/teen/adult/senior) using <code>pd.cut</code></li>
+    <li>Survival rate by: sex, pclass, age_group, is_alone — each as a separate groupby analysis</li>
+    <li>Find: best and worst (sex, pclass) combination for survival</li>
+    <li>Correlation: which numeric features correlate most with survival?</li>
+  </ol>
+  <div class="exh"><strong>Hint:</strong> <code>df.groupby(["sex","pclass"])["survived"].mean().sort_values(ascending=False)</code></div>
+  <div class="exb"><strong>Bonus:</strong> <code>pd.pivot_table(df, values="survived", index="sex", columns="pclass", aggfunc="mean")</code> — creates a heatmap-ready table showing survival rate for every sex×class combo.</div>
+</div>
+
+<div class="ex">
+  <div class="exn">Exercise 05 · APIs + Pandas</div>
+  <div class="ext">Multi-City Weather Dashboard</div>
+  <span class="extg etg-m">Intermediate</span>
+  <div class="exd">Build a weather comparison tool using the free Open-Meteo API (no API key needed!):</div>
+  <ol class="exs">
+    <li>Fetch 7-day hourly temperature + precipitation for 5 cities of your choice</li>
+    <li>Load into a single DataFrame: columns = city, datetime, temp_c, precip_mm</li>
+    <li>Parse datetime with <code>pd.to_datetime</code>, ensure numeric types</li>
+    <li>Analysis: daily average temp per city, wettest day across all cities, hottest hour of the week</li>
+    <li>Use your <code>APIClient</code> class from Day 6 (retry logic included)</li>
+    <li>Export: <code>weather_7day.csv</code> + <code>summary.json</code></li>
+  </ol>
+  <div class="exh"><strong>Endpoint:</strong> <code>https://api.open-meteo.com/v1/forecast?latitude=X&longitude=Y&hourly=temperature_2m,precipitation&forecast_days=7</code></div>
+  <div class="exb"><strong>Bonus:</strong> Add regex validation — city names must match <code>^[A-Za-z\s\-]+$</code> before the API call. Handle invalid names with a clear error message.</div>
+</div>
+
+<div class="ex">
+  <div class="exn">Exercise 06 · Full Week 2 Integration</div>
+  <div class="ext">GitHub Profile Analyser</div>
+  <span class="extg etg-h">Hard</span>
+  <div class="exd">Use the free GitHub REST API (no auth needed, 60 req/hr) to analyse any public developer profile end-to-end:</div>
+  <ol class="exs">
+    <li>Class <code>GitHubAnalyser</code>: init with <code>username</code>, uses <code>APIClient</code> internally</li>
+    <li><code>fetch_repos()</code>: GET <code>https://api.github.com/users/{username}/repos?per_page=100</code></li>
+    <li><code>to_dataframe()</code>: name, stars, forks, language, created_at (parsed), updated_at, size_kb</li>
+    <li><code>top_repos(n=5)</code>: most starred repos as a formatted table</li>
+    <li><code>language_summary()</code>: language distribution using Counter + percentage</li>
+    <li>Regex: extract all repo names containing a 4-digit year like <code>project-2024</code> or <code>ml_2023</code></li>
+    <li><code>export(path)</code>: save analysis as JSON report</li>
+  </ol>
+  <div class="exh"><strong>Year regex:</strong> <code>re.search(r'20\d{2}', repo_name)</code>. Parse dates: <code>pd.to_datetime(df["created_at"]).dt.year</code></div>
+  <div class="exb"><strong>Bonus:</strong> <code>activity_score()</code> — combine stars + forks + recency bonus (repos updated in last 6 months get 1.5× multiplier) into one score per repo. Rank repos by this score.</div>
+</div>
+
+</div><!-- /exercises -->
+
+<!-- ======== ROADMAP SECTION ======== -->
+<div class="sec" id="roadmap">
+  <p style="font-size:14px;color:var(--mu);line-height:1.75;margin-bottom:24px">Week 2 is the bridge. Week 1 taught syntax — Week 2 teaches the tools every real data science job uses. Every topic here connects directly to the resume projects.</p>
+  <div class="rmw">
+    <div class="rmc" style="opacity:.6;border-color:rgba(110,231,183,.2)"><div class="rmtg ok">Week 1 ✓</div><div class="rmn">Python Basics</div><div class="rmt">Variables · Loops · Functions · Dicts · Files · Exceptions</div></div>
+    <div class="rmc cur"><div class="nowbdg">NOW</div><div class="rmtg now">Week 2</div><div class="rmn">Python Intermediate</div><div class="rmt">OOP · NumPy · Pandas · APIs · Regex · Modules</div></div>
+    <div class="rmc"><div class="rmtg">Week 3 — next</div><div class="rmn">ML Foundations</div><div class="rmt">sklearn · Feature Eng · Regression · Classification · Ensembles · Pipelines · MLflow</div></div>
+    <div class="rmc" style="opacity:.55"><div class="rmtg">Week 4</div><div class="rmn">LLMs & RAG</div><div class="rmt">LangChain · FAISS · Embeddings · RAG · LLM Eval · OpenAI API</div></div>
+  </div>
+
+  <div style="background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:22px">
+    <div style="font-family:var(--mono);font-size:10px;color:var(--ac);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px">Week 2 → Resume project connections</div>
+    <table class="ctab" style="margin:0">
+      <tr><th>Week 2 skill</th><th>Resume project</th><th>Why it matters</th></tr>
+      <tr><td>OOP (Day 2)</td><td>All ML projects</td><td>PyTorch models are classes you subclass. LangChain chains are OOP. scikit-learn estimators are classes.</td></tr>
+      <tr><td>NumPy (Day 4)</td><td>Exercise Counter (YOLO)</td><td>Video frames are NumPy arrays. Angle calculations between body keypoints use vector dot products.</td></tr>
+      <tr><td>Pandas (Day 5)</td><td>Demand Forecasting (Yara), Bengaluru Housing</td><td>All tabular data becomes a DataFrame before entering any sklearn pipeline.</td></tr>
+      <tr><td>APIs (Day 6)</td><td>LLM Eval Framework, RAG Platform</td><td>Every OpenAI/Anthropic call uses requests under the hood. You'll build wrappers like the APIClient class.</td></tr>
+      <tr><td>Generators (Day 1)</td><td>RAG Pipeline, LLM streaming</td><td>LangChain streaming uses generators to yield response tokens one at a time to the UI.</td></tr>
+    </table>
+  </div>
+</div><!-- /roadmap -->
+
+</div><!-- /main -->
+<footer>Built for Taha &amp; Zephyr · AI/ML Learning Path · Week 2 of 4 · Python Intermediate</footer>
+
+<script>
+// ─── QUIZ DATA ─────────────────────────────────────────────
+const QS = [
+  {d:1,q:"What does <code>[x**2 for x in range(5) if x%2==0]</code> return?",
+   opts:["[1,4,9,16,25]","[0,4,16]","[0,2,4]","[4,16]"],a:1,
+   e:"range(5) gives 0,1,2,3,4. Keep evens: 0,2,4. Square them: 0,4,16."},
+  {d:1,q:"What is <code>{k:v for k,v in d.items() if v>1}</code> filtering with d = {'a':1,'b':2,'c':3}?",
+   opts:["{'a':1}","{'b':2,'c':3}","{'a':1,'b':2}","{'c':3}"],a:1,
+   e:"Dict comp with filter: only items where v>1 pass — so 'b':2 and 'c':3."},
+  {d:1,q:"A generator uses () instead of []. What is its biggest advantage?",
+   opts:["Faster compute speed","Near-zero memory — produces values one at a time","Better syntax","Can be indexed"],a:1,
+   e:"A generator stores only its current state, not all values. 1M-element list ≈ 8MB; equivalent generator ≈ 120 bytes."},
+  {d:1,q:"What does <code>team_a - team_b</code> return for two sets?",
+   opts:["Empty set if equal","Items in team_a that are NOT in team_b","Union of both","Items in both sets"],a:1,
+   e:"Set difference (A - B) = elements in A but not in B. Like SQL: SELECT * FROM A WHERE NOT IN B."},
+  {d:2,q:"What does <code>return self</code> at the end of a method enable?",
+   opts:["Recursion","Method chaining: obj.a().b().c()","Static access","Singleton pattern"],a:1,
+   e:"Returning self returns the object itself, enabling: account.deposit(100).withdraw(50).statement()"},
+  {d:2,q:"What does <code>super().__init__(owner, balance)</code> do inside a child class?",
+   opts:["Creates a new parent instance","Calls the parent's __init__ to initialise inherited attributes","Overrides parent init","Copies parent state"],a:1,
+   e:"super() refers to the parent class. Calling __init__ on it runs the parent's initialisation logic so the child inherits properly."},
+  {d:2,q:"<code>isinstance(savings, BankAccount)</code> where SavingsAccount extends BankAccount — result?",
+   opts:["False — it is a SavingsAccount","True — inheritance makes it also a BankAccount","Error","Depends on method resolution"],a:1,
+   e:"isinstance() checks the full inheritance chain. A SavingsAccount IS a BankAccount because it inherits from it."},
+  {d:3,q:"What does <code>Counter(['a','b','a','c','a','b']).most_common(2)</code> return?",
+   opts:["[('a',3),('b',2)]","{'a':3,'b':2,'c':1}","['a','b']","[3,2]"],a:0,
+   e:"Counter counts frequencies. most_common(2) returns the 2 most frequent as list of (item, count) tuples."},
+  {d:3,q:"What does <code>pip freeze > requirements.txt</code> do?",
+   opts:["Deletes unused packages","Saves all installed packages + exact versions to a file","Installs packages","Shows outdated packages"],a:1,
+   e:"pip freeze lists all installed packages with exact versions. Redirecting to requirements.txt lets others run 'pip install -r requirements.txt' to reproduce the exact environment."},
+  {d:4,q:"Why is NumPy 100× faster than Python loops for math operations?",
+   opts:["Uses multiple CPUs by default","Runs vectorised C code on contiguous memory, no Python overhead per element","Caches previous results","Compresses data before operating"],a:1,
+   e:"NumPy operations are implemented in optimised C and run on contiguous memory blocks. Python loops have interpreter overhead for every single element."},
+  {d:4,q:"On a 2D array shape (5,3), what does <code>arr.mean(axis=1)</code> compute?",
+   opts:["3 values — mean of each column","5 values — mean of each row","A single overall mean","Sum of each row"],a:1,
+   e:"axis=1 collapses the column dimension. For (5,3) you get 5 means — one average per row."},
+  {d:4,q:"What does <code>arr[arr > 5]</code> do on a NumPy array?",
+   opts:["Returns indices where arr>5","Returns values where arr>5 (boolean indexing)","Raises an error","Returns the count"],a:1,
+   e:"Boolean indexing: arr>5 creates a True/False array. arr[bool_array] returns only elements where True."},
+  {d:5,q:"What is the difference between <code>df.loc[2,'name']</code> and <code>df.iloc[2,0]</code>?",
+   opts:["No difference — same result always","loc uses labels; iloc uses integer positions","loc is faster","iloc is deprecated"],a:1,
+   e:"loc['row_label','col_name'] is label-based. iloc[row_pos, col_pos] is integer-position-based. They differ when index isn't 0,1,2,..."},
+  {d:5,q:"What does <code>df.groupby('dept')['salary'].agg(['mean','count'])</code> return?",
+   opts:["A single mean value","A Series of means","DataFrame with mean+count columns, indexed by dept","Error — can't use two aggregations"],a:2,
+   e:"groupby splits by dept, agg(['mean','count']) computes both per group. Result is a DataFrame with mean and count columns."},
+  {d:5,q:"Which Pandas method fills missing values with the group median (not the overall median)?",
+   opts:["df.fillna(df.median())","df[col].fillna(df.groupby('g')[col].transform('median'))","df.dropna()","df[col].interpolate()"],a:1,
+   e:"Using groupby + transform('median') computes the median per group, then fills each row with its own group's median — much smarter than the overall median."},
+  {d:6,q:"What does <code>response.raise_for_status()</code> do?",
+   opts:["Returns the status code","Raises HTTPError if status is 4xx or 5xx","Retries the request","Parses the JSON body"],a:1,
+   e:"raise_for_status() checks the response code. If it's 4xx (client error) or 5xx (server error), it raises requests.HTTPError."},
+  {d:6,q:"HTTP status code 429 means:",
+   opts:["Not Found","Server Error","Too Many Requests — you're rate limited","Unauthorised"],a:2,
+   e:"429 Too Many Requests indicates rate limiting. The server is asking you to slow down. Exponential backoff is the standard response."},
+  {d:7,q:"What does <code>re.findall(r'\\d+', 'abc 42 def 7 ghi 100')</code> return?",
+   opts:["['42','7','100']","[42,7,100]","['42']","[3,1,3] (positions)"],a:0,
+   e:"re.findall returns all non-overlapping matches as strings. \\d+ matches one or more consecutive digits."},
+  {d:7,q:"What is the difference between <code>re.search()</code> and <code>re.match()</code>?",
+   opts:["No difference","search scans the whole string; match only checks at the start","match is faster","search uses capture groups"],a:1,
+   e:"re.match() only checks at the very beginning of the string. re.search() scans the entire string for the first match. For general searching, search() is usually correct."},
+  {d:7,q:"What does <code>re.sub(r'\\s+', ' ', text)</code> do?",
+   opts:["Removes all whitespace","Replaces multiple spaces/tabs with a single space","Splits on whitespace","Counts spaces"],a:1,
+   e:"\\s+ matches one or more whitespace characters. re.sub replaces each match with ' ', effectively normalising multiple spaces/tabs/newlines to single spaces."},
+  {d:7,q:"In the pattern <code>r'(\\d{4})-(\\d{2})-(\\d{2})'</code>, what does <code>m.group(2)</code> return for '2024-03-15'?",
+   opts:["2024","03","15","2024-03-15"],a:1,
+   e:"group(1) = first capture group (year=2024), group(2) = second group (month=03), group(3) = third (day=15). group(0) is the full match."},
+];
+
+let score = 0;
+function buildQuizzes(){
+  const names = {1:"Comprehensions & Sets",2:"OOP & Classes",3:"Modules & pip",4:"NumPy",5:"Pandas",6:"APIs & requests",7:"Regex"};
+  let html = '', curD = 0;
+  QS.forEach((q,i) => {
+    if(q.d !== curD){ curD=q.d; html+=`<div class="qlb">Day ${q.d} — ${names[q.d]}</div>`; }
+    html += `<div class="qcard" id="qc${i}">
+      <div class="qq">Q${i+1}. ${q.q}</div>
+      <div class="qopts">${q.opts.map((o,j)=>`<button class="qo" id="qo${i}_${j}" onclick="ans(${i},${j})">${o}</button>`).join('')}</div>
+      <div class="qfb" id="qf${i}"></div>
+    </div>`;
+  });
+  document.getElementById('qt').textContent = QS.length;
+  document.getElementById('qc').innerHTML = html;
+}
+
+function ans(qi, oi){
+  const card = document.getElementById('qc'+qi);
+  if(card.dataset.done) return;
+  card.dataset.done = '1';
+  const q = QS[qi];
+  if(oi === q.a) score++;
+  document.getElementById('qs').textContent = score;
+  for(let j=0;j<q.opts.length;j++){
+    const b = document.getElementById(`qo${qi}_${j}`);
+    b.disabled = true;
+    if(j===q.a) b.classList.add('ok');
+    else if(j===oi) b.classList.add('no');
+  }
+  const fb = document.getElementById('qf'+qi);
+  fb.textContent = (oi===q.a ? '✓ Correct! ' : '✗ Incorrect. ') + q.e;
+  fb.className = 'qfb show ' + (oi===q.a ? 'ok' : 'no');
+}
+
+// Inline quiz handler (used in topic cards)
+function icAns(cardId, btn, chosen, correct, explanation){
+  const card = document.getElementById(cardId);
+  if(card.dataset.done) return;
+  card.dataset.done = '1';
+  const opts = card.querySelectorAll('.icc-opt');
+  opts.forEach((b,i) => {
+    b.disabled = true;
+    if(i===correct) b.classList.add('ok');
+    else if(i===chosen && chosen!==correct) b.classList.add('no');
+  });
+  const num = cardId.replace('icq','');
+  const fb  = document.getElementById('icfb'+num);
+  if(fb){
+    fb.textContent = (chosen===correct ? '✓ Correct! ' : '✗ Not quite. ') + explanation;
+    fb.className = 'icc-fb show ' + (chosen===correct ? 'ok' : 'no');
+  }
+}
+
+// Day / Tab switching
+function showDay(n, btn){
+  document.querySelectorAll('.dv').forEach(d => d.classList.remove('on'));
+  document.querySelectorAll('.dbt').forEach(b => b.classList.remove('on'));
+  document.getElementById('day'+n).classList.add('on');
+  btn.classList.add('on');
+}
+function showTab(id, btn){
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Progress tracking
+const done = new Set();
+function markDone(n){
+  const btn = document.getElementById('db'+n);
+  const dbt = document.querySelectorAll('.dbt')[n-1];
+  if(done.has(n)){
+    done.delete(n);
+    btn.classList.remove('dn'); btn.textContent='Mark done';
+    dbt.classList.remove('dn');
+  } else {
+    done.add(n);
+    btn.classList.add('dn'); btn.textContent='✓ Done';
+    dbt.classList.add('dn');
+  }
+  const pct = Math.round(done.size/7*100);
+  document.getElementById('pgf').style.width = pct+'%';
+  document.getElementById('pgtxt').textContent = `${done.size} / 7 days complete`;
+  document.getElementById('pgpct').textContent = pct+'%';
+}
+
+// Copy code
+function cp(btn){
+  const pre = btn.nextElementSibling;
+  navigator.clipboard.writeText(pre.innerText).then(()=>{
+    btn.textContent='copied!';
+    setTimeout(()=>btn.textContent='copy',1700);
+  });
+}
+
+buildQuizzes();
+</script>
+</body>
+</html>
